@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'signup.dart';
 import 'forgot_password.dart';
 
-void main() => runApp(const MyApp());
+void main(){ 
+  
+  
+  runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ForgotPasswordData()),
+      ],
+      child: const MyApp(),
+    ),);}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
