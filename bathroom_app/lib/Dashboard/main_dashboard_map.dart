@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:bathroom_app/Dashboard/main_dashboard_searchArea.dart'; 
+import 'package:bathroom_app/Dashboard/main_dashboard_widget.dart';
 
 class DashboardMap extends StatefulWidget {
   const DashboardMap({super.key});
@@ -30,6 +30,7 @@ class _DashboardMapState extends State<DashboardMap> {
               mapToolbarEnabled: false,
             ),
           ),
+          const MainDashboardWidget(),
         ],
       ),
     );
