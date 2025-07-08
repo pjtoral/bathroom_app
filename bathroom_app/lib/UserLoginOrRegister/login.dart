@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'signup.dart';
 import 'forgot_password.dart';
 import '../Dashboard/main_dashboard_map.dart';
-import 'package:bathroom_app/Dashboard/map_test.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -21,11 +20,7 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: Column(
         children: [
-          Container(
-            height: 160,
-            width: double.infinity,
-            color: Colors.orange,
-          ),
+          Container(height: 160, width: double.infinity, color: Colors.orange),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -33,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 48),
-                  const Center( 
+                  const Center(
                     child: Text(
                       textAlign: TextAlign.center,
                       "Welcome!",
@@ -47,10 +42,7 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 32),
                   const Text(
                     'Username',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(height: 0),
                   TextField(
@@ -64,10 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 16),
                   const Text(
                     'Password',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(height: 4),
                   TextField(
@@ -76,7 +65,9 @@ class _LoginPageState extends State<LoginPage> {
                       hintText: 'Enter your password',
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                          _obscurePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                           color: Colors.orange,
                         ),
                         onPressed: () {
@@ -96,7 +87,9 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ForgotPasswordPage())
+                          MaterialPageRoute(
+                            builder: (context) => ForgotPasswordPage(),
+                          ),
                         );
                       },
                       style: TextButton.styleFrom(
@@ -112,9 +105,11 @@ class _LoginPageState extends State<LoginPage> {
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => DashboardMapTest())
-                          );
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DashboardMap(),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.orange,
@@ -141,7 +136,9 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => SignupPage())
+                            MaterialPageRoute(
+                              builder: (context) => SignupPage(),
+                            ),
                           );
                         },
                         child: const Text(
