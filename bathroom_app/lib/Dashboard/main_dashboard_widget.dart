@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'recommendations_carrousel.dart';
 
 class MainDashboardWidget extends StatelessWidget {
   const MainDashboardWidget({super.key});
@@ -81,7 +82,7 @@ class MainDashboardWidget extends StatelessWidget {
                 const SizedBox(height: 21),
                 // Recommendations header
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: const [
@@ -95,10 +96,46 @@ class MainDashboardWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 350),
+                const SizedBox(height: 19),
+                SizedBox(
+                  height: 340, // Adjust height as needed
+                  child: PageView(
+                    controller: PageController(viewportFraction: 0.85),
+                    children: [
+                      RecommendationCard(
+                        title: "Stephen cr",
+                        rating: 4.8,
+                        reviews: 31,
+                        photos: 18,
+                        description:
+                            "wow! so clean and so fresh! the albratoss provided was scrumptious!",
+                        author: "anonymous",
+                      ),
+                      RecommendationCard(
+                        title: "mjart cr",
+                        rating: 3.8,
+                        reviews: 311,
+                        photos: 26,
+                        description:
+                            "why is it raining so hard today, I cant go to the gym",
+                        author: "anonymous",
+                      ),
+                      RecommendationCard(
+                        title: "rafile cr",
+                        rating: 100.8,
+                        reviews: 571,
+                        photos: 8153,
+                        description:
+                            "wowowowowowowoowowowowoowowowowowoowowowowowowooowwoowo",
+                        author: "anonymous",
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
                 // Recents header with See More
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
