@@ -1,11 +1,65 @@
 import 'package:flutter/material.dart';
 import 'recommendations_carrousel.dart';
 
-class MainDashboardWidget extends StatelessWidget {
+// Change to StatefulWidget
+class MainDashboardWidget extends StatefulWidget {
   const MainDashboardWidget({super.key});
 
   @override
+  State<MainDashboardWidget> createState() => _MainDashboardWidgetState();
+}
+
+class _MainDashboardWidgetState extends State<MainDashboardWidget> {
+  bool _showAllRecents = false;
+
+  // Static list of recent bathrooms
+  static final List<Map<String, dynamic>> recentBathrooms = [
+    {
+      'name': 'Ayala Central BLoc',
+      'location': '2nd Floor',
+      'rating': 4.5,
+    },
+    {
+      'name': 'iAcademy Comfort Room',
+      'location': 'Filinvest 5th Floor',
+      'rating': 4.0,
+    },
+    {
+      'name': 'Sugbu Mercado Comfort Room',
+      'location': 'Sugbo Mercado It Park',
+      'rating': 3.8,
+    },
+    {
+      'name': 'SM City Cebu Restroom',
+      'location': '2rd Floor',
+      'rating': 4.2,
+    },
+    {
+      'name': 'SM City Consolacion Restroom',
+      'location': '2rd Floor, Food court',
+      'rating': 4.1,
+    },
+    {
+      'name': 'Ayala Center Cebu Restroom',
+      'location': 'Upper Ground Floor',
+      'rating': 3.9,
+    },
+    {
+      'name': 'Jollibee Filinvest',
+      'location': 'Filinvest Tower 2nd Floor',
+      'rating': 4.3,
+    },
+    {
+      'name': 'Sindos Comfort Room',
+      'location': 'Canduman, Mandaue City',
+      'rating': 4.0,
+    },
+  ];
+
+  @override
   Widget build(BuildContext context) {
+    final recentsToShow = _showAllRecents ? recentBathrooms : recentBathrooms.take(4).toList();
+
     return DraggableScrollableSheet(
       initialChildSize: 0.101,
       minChildSize: 0.101,
@@ -133,27 +187,83 @@ class MainDashboardWidget extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                // Recents header with See More
+                // Recents header with See More or Back
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        "Recents",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                      Text(
-                        "See More",
-                        style: TextStyle(color: Colors.orange, fontSize: 16),
-                      ),
+                    children: [
+                      _showAllRecents
+                          ? Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.arrow_back, color: Colors.orange),
+                                  onPressed: () {
+                                    setState(() {
+                                      _showAllRecents = false;
+                                    });
+                                  },
+                                ),
+                                const Text(
+                                  "Recents",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : const Text(
+                              "Recents",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                      !_showAllRecents
+                          ? GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _showAllRecents = true;
+                                });
+                              },
+                              child: const Text(
+                                "See More",
+                                style: TextStyle(color: Colors.orange, fontSize: 16),
+                              ),
+                            )
+                          : const SizedBox.shrink(),
                     ],
                   ),
                 ),
                 const SizedBox(height: 16),
+                // Recents list
+                ...recentsToShow.map(
+                  (bathroom) => Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 18.0, vertical: 6.0),
+                    child: Card(
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ListTile(
+                        leading: Icon(Icons.wc, color: Colors.orange),
+                        title: Text(bathroom['name']),
+                        subtitle: Text(bathroom['location']),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.star, color: Colors.amber, size: 20),
+                            SizedBox(width: 4),
+                            Text(bathroom['rating'].toString()),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                // ...existing code...
               ],
             ),
           ),
