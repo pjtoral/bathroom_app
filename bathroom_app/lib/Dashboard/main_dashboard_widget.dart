@@ -1,7 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:bathroom_app/views/search_utils.dart'; 
 
-class MainDashboardWidget extends StatelessWidget {
+class MainDashboardWidget extends StatefulWidget {
   const MainDashboardWidget({super.key});
+
+  @override
+  State<MainDashboardWidget> createState() => _MainDashboardWidgetState();
+}
+
+class _MainDashboardWidgetState extends State<MainDashboardWidget> {
+  final TextEditingController _searchController = TextEditingController();
+  String searchText = '';
+  List<String> comfortRooms = [
+    'CR - Ground Floor',
+    'CR - 2nd Floor',
+    'CR - Near Cafeteria',
+    'CR - Library Side',
+    'CR - Admin Wing',
+  ];
+
+  List<String> searchResults = [];
+
+  @override
+  void initState() {
+    super.initState();
+    searchResults = comfortRooms;
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged(String value) {
+    setState(() {
+      searchText = value;
+      searchResults = filterSearchResults(value, comfortRooms); // 🔍 Uses function from search_utils.dart
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +67,6 @@ class MainDashboardWidget extends StatelessWidget {
               padding: EdgeInsets.zero,
               children: [
                 const SizedBox(height: 12),
-                // Simpler drag handle
                 Center(
                   child: Container(
                     width: 52,
@@ -42,7 +78,8 @@ class MainDashboardWidget extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                // Search bar
+
+                // ✅ Search Bar
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18.0),
                   child: Container(
@@ -57,10 +94,11 @@ class MainDashboardWidget extends StatelessWidget {
                           padding: EdgeInsets.symmetric(horizontal: 12.0),
                           child: Icon(Icons.search, color: Colors.orange),
                         ),
-                        const Expanded(
+                        Expanded(
                           child: TextField(
-                            enabled: false,
-                            decoration: InputDecoration(
+                            controller: _searchController,
+                            onChanged: _onSearchChanged,
+                            decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Find nearest comfort room',
                               hintStyle: TextStyle(
@@ -72,51 +110,30 @@ class MainDashboardWidget extends StatelessWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          child: Icon(Icons.tune, color: Colors.orange[400]),
+                          child: Icon(Icons.tune, color: Colors.orange),
                         ),
                       ],
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 21),
-                // Recommendations header
+
+                // 🔍 Display Results
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: const [
-                      Text(
-                        "Recommendations near you",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: searchResults.map((item) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(item, style: const TextStyle(fontSize: 16)),
+                      );
+                    }).toList(),
                   ),
                 ),
-                const SizedBox(height: 350),
-                // Recents header with See More
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        "Recents",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                      Text(
-                        "See More",
-                        style: TextStyle(color: Colors.orange, fontSize: 16),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 16),
+
+                const SizedBox(height: 21),
               ],
             ),
           ),
