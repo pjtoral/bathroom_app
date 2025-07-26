@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bathroom_app/views/search_utils.dart'; 
 import 'recommendations_carrousel.dart';
+import 'package:bathroom_app/Dashboard/place_info.dart';
 
 class MainDashboardWidget extends StatefulWidget {
   const MainDashboardWidget({super.key});
@@ -26,23 +27,23 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
 
   static final List<Map<String, dynamic>> recentBathrooms = [
     {
-      'name': 'Ayala Central BLoc',
+      'name': 'Ayala - CBlock',
       'location': '2nd Floor',
       'rating': 4.5,
     },
     {
-      'name': 'iAcademy Comfort Room',
-      'location': 'Filinvest 5th Floor',
+      'name': 'The Walk',
+      'location': 'The Walk, Cebu IT Park',
       'rating': 4.0,
     },
     {
-      'name': 'Sugbu Mercado Comfort Room',
-      'location': 'Sugbo Mercado It Park',
+      'name': 'IT Park Terminal',
+      'location': 'IT Park Terminal, Cebu City',
       'rating': 3.8,
     },
     {
-      'name': 'SM City Cebu Restroom',
-      'location': '2rd Floor',
+      'name': 'iAcademy Comfort Room',
+      'location': 'Filinvest 5th Floor',
       'rating': 4.2,
     },
     {
@@ -199,30 +200,51 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                   height: 340,
                   child: PageView(
                     controller: PageController(viewportFraction: 0.85),
-                    children: const [
-                      RecommendationCard(
-                        title: "Stephen cr",
-                        rating: 4.8,
-                        reviews: 31,
-                        photos: 18,
-                        description: "wow! so clean and so fresh! the albratoss provided was scrumptious!",
-                        author: "anonymous",
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => const PlaceInfoPage()),
+                          );
+                        },
+                        child: const RecommendationCard(
+                          title: "Stephen cr",
+                          rating: 4.8,
+                          reviews: 31,
+                          photos: 18,
+                          description: "wow! so clean and so fresh! the albratoss provided was scrumptious!",
+                          author: "anonymous",
+                        ),
                       ),
-                      RecommendationCard(
-                        title: "mjart cr",
-                        rating: 3.8,
-                        reviews: 311,
-                        photos: 26,
-                        description: "why is it raining so hard today, I cant go to the gym",
-                        author: "anonymous",
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => const PlaceInfoPage()),
+                          );
+                        },
+                        child: const RecommendationCard(
+                          title: "mjart cr",
+                          rating: 3.8,
+                          reviews: 311,
+                          photos: 26,
+                          description: "why is it raining so hard today, I cant go to the gym",
+                          author: "anonymous",
+                        ),
                       ),
-                      RecommendationCard(
-                        title: "rafile cr",
-                        rating: 100.8,
-                        reviews: 571,
-                        photos: 8153,
-                        description: "wowowowowowowoowowowowoowowowowowoowowowowowowooowwoowo",
-                        author: "anonymous",
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => const PlaceInfoPage()),
+                          );
+                        },
+                        child: const RecommendationCard(
+                          title: "rafile cr",
+                          rating: 100.8,
+                          reviews: 571,
+                          photos: 8153,
+                          description: "wowowowowowowoowowowowoowowowowowoowowowowowowooowwoowo",
+                          author: "anonymous",
+                        ),
                       ),
                     ],
                   ),
@@ -285,22 +307,29 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                 ...recentsToShow.map(
                   (bathroom) => Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 6.0),
-                    child: Card(
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: ListTile(
-                        leading: const Icon(Icons.wc, color: Colors.orange),
-                        title: Text(bathroom['name']),
-                        subtitle: Text(bathroom['location']),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(Icons.star, color: Colors.amber, size: 20),
-                            const SizedBox(width: 4),
-                            Text(bathroom['rating'].toString()),
-                          ],
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const PlaceInfoPage()),
+                        );
+                      },
+                      child: Card(
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: ListTile(
+                          leading: const Icon(Icons.wc, color: Colors.orange),
+                          title: Text(bathroom['name']),
+                          subtitle: Text(bathroom['location']),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.star, color: Colors.amber, size: 20),
+                              const SizedBox(width: 4),
+                              Text(bathroom['rating'].toString()),
+                            ],
+                          ),
                         ),
                       ),
                     ),
