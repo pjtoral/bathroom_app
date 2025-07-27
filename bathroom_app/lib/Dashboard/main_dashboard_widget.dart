@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:bathroom_app/views/search_utils.dart';
 import 'recommendations_carrousel.dart';
 import 'package:bathroom_app/Dashboard/filter_popup.dart';
-import 'package:bathroom_app/views/search_filter_bar.dart';
+import 'place_info.dart'; // <-- Add this import
 
 class MainDashboardWidget extends StatefulWidget {
   const MainDashboardWidget({super.key});
@@ -13,94 +13,83 @@ class MainDashboardWidget extends StatefulWidget {
 
 class _MainDashboardWidgetState extends State<MainDashboardWidget> {
   final TextEditingController _searchController = TextEditingController();
-  final FocusNode _searchFocusNode = FocusNode();
-
   String searchText = '';
-  double? _selectedRating;
-  List<String> _selectedTags = [];
-  List<Map<String, dynamic>> filteredBathrooms = [];
+  List<String> comfortRooms = [
+    'CR - Ground Floor',
+    'CR - 2nd Floor',
+    'CR - Near Cafeteria',
+    'CR - Library Side',
+    'CR - Admin Wing',
+  ];
+
+  List<String> searchResults = [];
+
   bool _showAllRecents = false;
-  bool _isSearchFocused = false;
 
   static final List<Map<String, dynamic>> recentBathrooms = [
-    {
-      'name': 'Ayala Central BLoc',
-      'location': '2nd Floor',
-      'rating': 4.5,
-      'tags': ['Clean', 'Soap']
+    {'name': 'Ayala - CBlock',
+      'location': '2nd Floor, Ayala Central Bloc Cebu, Cebu City',
+      'rating': 4.5
     },
+     
     {
-      'name': 'iAcademy Comfort Room',
-      'location': 'Filinvest 5th Floor',
+      'name': 'The walk',
+      'location': 'Ayala Central Bloc Cebu, Cebu City',
       'rating': 4.0,
-      'tags': ['Soap', 'Accessible']
     },
     {
-      'name': 'Sugbu Mercado Comfort Room',
-      'location': 'Sugbo Mercado It Park',
+      'name': 'IT Park Terminal',
+      'location': 'IT Park, Cebu City',
       'rating': 3.8,
-      'tags': ['Bad', 'Toilet Paper']
+    },
+    {'name': 'iAcademy Comfort Room',
+     'location': '5th Floor, Filinvest Tower 2, Cebu City', 
+     'rating': 4.2},
+    {
+      'name': 'SM City Consolacion Restroom',
+      'location': '2rd Floor, Food court',
+      'rating': 4.1,
     },
     {
-      'name': 'SM City Cebu Restroom',
-      'location': '2rd Floor',
-      'rating': 4.2,
-      'tags': ['Mirror', 'Sink']
+      'name': 'Ayala Center Cebu Restroom',
+      'location': 'Upper Ground Floor',
+      'rating': 3.9,
+    },
+    {
+      'name': 'Jollibee Filinvest',
+      'location': 'Filinvest Tower 2nd Floor',
+      'rating': 4.3,
+    },
+    {
+      'name': 'Sindos Comfort Room',
+      'location': 'Canduman, Mandaue City',
+      'rating': 4.0,
     },
   ];
 
   @override
   void initState() {
     super.initState();
-    filteredBathrooms = recentBathrooms;
-    _searchFocusNode.addListener(() {
-      setState(() => _isSearchFocused = _searchFocusNode.hasFocus);
-    });
+    searchResults = comfortRooms;
   }
 
   @override
   void dispose() {
     _searchController.dispose();
-    _searchFocusNode.dispose();
     super.dispose();
   }
 
   void _onSearchChanged(String value) {
     setState(() {
       searchText = value;
-      _applyAllFilters();
+      // searchResults = filterSearchResults(value, comfortRooms);
     });
-  }
-
-  void _onRatingFilterChanged(double? value) {
-    setState(() {
-      _selectedRating = value;
-      _applyAllFilters();
-    });
-  }
-
-  void _onTagsChanged(List<String> tags) {
-    setState(() {
-      _selectedTags = tags;
-      _applyAllFilters();
-    });
-  }
-
-  void _applyAllFilters() {
-    filteredBathrooms = filterSearchResults(
-      query: searchText,
-      data: recentBathrooms,
-      minRating: _selectedRating,
-      tags: _selectedTags,
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     final recentsToShow =
         _showAllRecents ? recentBathrooms : recentBathrooms.take(4).toList();
-    final showSearchResults =
-        _isSearchFocused && searchText.trim().isNotEmpty;
 
     return DraggableScrollableSheet(
       initialChildSize: 0.101,
@@ -111,15 +100,15 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
       builder: (context, scrollController) {
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: () => FocusScope.of(context).unfocus(),
           child: Container(
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               boxShadow: [
                 BoxShadow(
-                    color: Color.fromARGB(66, 138, 138, 138),
-                    blurRadius: 10),
+                  color: Color.fromARGB(66, 138, 138, 138),
+                  blurRadius: 10,
+                ),
               ],
             ),
             child: ListView(
@@ -139,70 +128,101 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                 ),
                 const SizedBox(height: 16),
 
-                // Search + Filter Bar
+                // 🔍 Search Bar
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  child: SearchFilterBar(
-                    controller: _searchController,
-                    focusNode: _searchFocusNode,
-                    selectedRating: _selectedRating,
-                    selectedTags: _selectedTags,
-                    onSearchChanged: _onSearchChanged,
-                    onRatingFilterChanged: _onRatingFilterChanged,
-                    onTagsChanged: _onTagsChanged,
-                  ),
-                ),
-                const SizedBox(height: 16),
-
-                if (showSearchResults)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                    child: Column(
-                      children: filteredBathrooms.map((item) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 6.0),
-                          child: Card(
-                            elevation: 2,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: ListTile(
-                              leading: const Icon(Icons.place,
-                                  color: Colors.orange, size: 28),
-                              title: Text(item['name'],
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold)),
-                              subtitle: Text(item['location']),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Icon(Icons.star,
-                                      color: Colors.amber, size: 18),
-                                  const SizedBox(width: 4),
-                                  Text(item['rating'].toString()),
-                                ],
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.orange, width: 1),
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 12.0),
+                          child: Icon(Icons.search, color: Colors.orange),
+                        ),
+                        Expanded(
+                          child: TextField(
+                            controller: _searchController,
+                            onChanged: _onSearchChanged,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Find nearest comfort room',
+                              hintStyle: TextStyle(
+                                color: Color.fromARGB(255, 138, 138, 138),
                               ),
+                              isDense: true,
                             ),
                           ),
-                        );
-                      }).toList(),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(16),
+                                ),
+                              ),
+                              builder: (context) => const FilterPopup(),
+                            );
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12.0),
+                            child: Icon(Icons.tune, color: Colors.orange),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+                ),
 
-                if (!showSearchResults) ...[
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Text("Recommendations near you",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18)),
+                const SizedBox(height: 21),
+
+                // 🔍 Display Results
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children:
+                        searchResults.map((item) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              item,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          );
+                        }).toList(),
                   ),
-                  const SizedBox(height: 19),
-                  SizedBox(
-                    height: 340,
-                    child: PageView(
-                      controller: PageController(viewportFraction: 0.85),
-                      children: const [
-                        RecommendationCard(
+                ),
+
+                const SizedBox(height: 21),
+
+                // Recommendations header
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Text(
+                    "Recommendations near you",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                ),
+                const SizedBox(height: 19),
+                SizedBox(
+                  height: 340,
+                  child: PageView(
+                    controller: PageController(viewportFraction: 0.85),
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => const PlaceInfoPage()),
+                          );
+                        },
+                        child: const RecommendationCard(
                           title: "Stephen cr",
                           rating: 4.8,
                           reviews: 31,
@@ -211,7 +231,14 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                               "wow! so clean and so fresh! the albratoss provided was scrumptious!",
                           author: "anonymous",
                         ),
-                        RecommendationCard(
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => const PlaceInfoPage()),
+                          );
+                        },
+                        child: const RecommendationCard(
                           title: "mjart cr",
                           rating: 3.8,
                           reviews: 311,
@@ -220,84 +247,123 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                               "why is it raining so hard today, I cant go to the gym",
                           author: "anonymous",
                         ),
-                        RecommendationCard(
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => const PlaceInfoPage()),
+                          );
+                        },
+                        child: const RecommendationCard(
                           title: "rafile cr",
-                          rating: 5.8,
+                          rating: 100.8,
                           reviews: 571,
                           photos: 8153,
                           description:
                               "wowowowowowowoowowowowoowowowowowoowowowowowowooowwoowo",
                           author: "anonymous",
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 16),
+                ),
+                const SizedBox(height: 16),
 
-                  // Recents header and list
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _showAllRecents
-                            ? Row(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.arrow_back,
-                                        color: Colors.orange),
-                                    onPressed: () =>
-                                        setState(() => _showAllRecents = false),
-                                  ),
-                                  const Text("Recents",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18)),
-                                ],
-                              )
-                            : const Text("Recents",
+                // Recents header with See More or Back
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _showAllRecents
+                          ? Row(
+                            children: [
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.orange,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _showAllRecents = false;
+                                  });
+                                },
+                              ),
+                              const Text(
+                                "Recents",
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18)),
-                        !_showAllRecents
-                            ? GestureDetector(
-                                onTap: () =>
-                                    setState(() => _showAllRecents = true),
-                                child: const Text("See More",
-                                    style: TextStyle(
-                                        color: Colors.orange, fontSize: 16)),
-                              )
-                            : const SizedBox.shrink(),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  ...recentsToShow.map((bathroom) => Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 18.0, vertical: 6.0),
-                        child: Card(
-                          elevation: 2,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: ListTile(
-                            leading:
-                                const Icon(Icons.wc, color: Colors.orange),
-                            title: Text(bathroom['name']),
-                            subtitle: Text(bathroom['location']),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Icon(Icons.star,
-                                    color: Colors.amber, size: 20),
-                                const SizedBox(width: 4),
-                                Text(bathroom['rating'].toString()),
-                              ],
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          )
+                          : const Text(
+                            "Recents",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
                             ),
                           ),
+                      !_showAllRecents
+                          ? GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _showAllRecents = true;
+                              });
+                            },
+                            child: const Text(
+                              "See More",
+                              style: TextStyle(
+                                color: Colors.orange,
+                                fontSize: 16,
+                              ),
+                            ),
+                          )
+                          : const SizedBox.shrink(),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                // Recents list
+                ...recentsToShow.map(
+                  (bathroom) => Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 18.0,
+                      vertical: 6.0,
+                    ),
+                    child: Card(
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ListTile(
+                        leading: const Icon(Icons.wc, color: Colors.orange),
+                        title: Text(bathroom['name']),
+                        subtitle: Text(bathroom['location']),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(bathroom['rating'].toString()),
+                          ],
                         ),
-                      )),
-                ],
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => const PlaceInfoPage()),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
