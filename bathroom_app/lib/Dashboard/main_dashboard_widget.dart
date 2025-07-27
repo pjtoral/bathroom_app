@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bathroom_app/views/search_utils.dart'; 
+import 'package:bathroom_app/views/search_utils.dart';
 import 'recommendations_carrousel.dart';
 
 class MainDashboardWidget extends StatefulWidget {
@@ -12,15 +12,7 @@ class MainDashboardWidget extends StatefulWidget {
 class _MainDashboardWidgetState extends State<MainDashboardWidget> {
   final TextEditingController _searchController = TextEditingController();
   String searchText = '';
-  List<String> comfortRooms = [
-    'CR - Ground Floor',
-    'CR - 2nd Floor',
-    'CR - Near Cafeteria',
-    'CR - Library Side',
-    'CR - Admin Wing',
-  ];
-
-  List<String> searchResults = [];
+  List<Map<String, dynamic>> filteredBathrooms = [];
 
   bool _showAllRecents = false;
 
@@ -70,7 +62,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
   @override
   void initState() {
     super.initState();
-    searchResults = comfortRooms;
+    filteredBathrooms = recentBathrooms;
   }
 
   @override
@@ -82,7 +74,10 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
   void _onSearchChanged(String value) {
     setState(() {
       searchText = value;
-      searchResults = filterSearchResults(value, comfortRooms);
+      filteredBathrooms = filterSearchResults(
+        query: value,
+        data: recentBathrooms,
+      );
     });
   }
 
@@ -146,9 +141,10 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                           child: TextField(
                             controller: _searchController,
                             onChanged: _onSearchChanged,
+                            keyboardType: TextInputType.number,
                             decoration: const InputDecoration(
                               border: InputBorder.none,
-                              hintText: 'Find nearest comfort room',
+                              hintText: 'Enter rating (1–5)',
                               hintStyle: TextStyle(
                                 color: Color.fromARGB(255, 138, 138, 138),
                               ),
@@ -156,9 +152,9 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          child: Icon(Icons.tune, color: Colors.orange),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 12.0),
+                          child: Icon(Icons.star, color: Colors.orange),
                         ),
                       ],
                     ),
@@ -172,10 +168,13 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                   padding: const EdgeInsets.symmetric(horizontal: 18.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: searchResults.map((item) {
+                    children: filteredBathrooms.map((item) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(item, style: const TextStyle(fontSize: 16)),
+                        child: Text(
+                          '${item['name']} — ${item['location']} (⭐ ${item['rating']})',
+                          style: const TextStyle(fontSize: 16),
+                        ),
                       );
                     }).toList(),
                   ),
@@ -218,7 +217,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                       ),
                       RecommendationCard(
                         title: "rafile cr",
-                        rating: 100.8,
+                        rating: 5.8,
                         reviews: 571,
                         photos: 8153,
                         description: "wowowowowowowoowowowowoowowowowowoowowowowowowooowwoowo",
@@ -229,7 +228,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                 ),
                 const SizedBox(height: 16),
 
-                // Recents header with See More or Back
+                // Recents header
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Row(
