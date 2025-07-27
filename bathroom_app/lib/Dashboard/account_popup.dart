@@ -1,5 +1,5 @@
+import 'package:bathroom_app/Dashboard/upload_first.dart';
 import 'package:flutter/material.dart';
-import 'package:bathroom_app/Dashboard/upload.dart';
 import 'package:bathroom_app/Dashboard/edit_profile.dart';
 import 'package:bathroom_app/Dashboard/notification_popup.dart';
 
@@ -100,7 +100,7 @@ class AccountPopup extends StatelessWidget {
                     Navigator.of(context).pop();
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const UploadPage(),
+                        builder: (context) => const FirstUploadPage(),
                       ),
                     );
                   },
