@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bathroom_app/views/search_utils.dart';
+import 'package:bathroom_app/views/search_filter_bar.dart';
 import 'recommendations_carrousel.dart';
 
 class MainDashboardWidget extends StatefulWidget {
@@ -12,52 +13,20 @@ class MainDashboardWidget extends StatefulWidget {
 class _MainDashboardWidgetState extends State<MainDashboardWidget> {
   final TextEditingController _searchController = TextEditingController();
   String searchText = '';
-  double? _selectedRating; // ⭐ Rating filter
+  double? _selectedRating;
   List<Map<String, dynamic>> filteredBathrooms = [];
 
   bool _showAllRecents = false;
 
   static final List<Map<String, dynamic>> recentBathrooms = [
-    {
-      'name': 'Ayala Central BLoc',
-      'location': '2nd Floor',
-      'rating': 4.5,
-    },
-    {
-      'name': 'iAcademy Comfort Room',
-      'location': 'Filinvest 5th Floor',
-      'rating': 4.0,
-    },
-    {
-      'name': 'Sugbu Mercado Comfort Room',
-      'location': 'Sugbo Mercado It Park',
-      'rating': 3.8,
-    },
-    {
-      'name': 'SM City Cebu Restroom',
-      'location': '2rd Floor',
-      'rating': 4.2,
-    },
-    {
-      'name': 'SM City Consolacion Restroom',
-      'location': '2rd Floor, Food court',
-      'rating': 4.1,
-    },
-    {
-      'name': 'Ayala Center Cebu Restroom',
-      'location': 'Upper Ground Floor',
-      'rating': 3.9,
-    },
-    {
-      'name': 'Jollibee Filinvest',
-      'location': 'Filinvest Tower 2nd Floor',
-      'rating': 4.3,
-    },
-    {
-      'name': 'Sindos Comfort Room',
-      'location': 'Canduman, Mandaue City',
-      'rating': 4.0,
-    },
+    {'name': 'Ayala Central BLoc', 'location': '2nd Floor', 'rating': 4.5},
+    {'name': 'iAcademy Comfort Room', 'location': 'Filinvest 5th Floor', 'rating': 4.0},
+    {'name': 'Sugbu Mercado Comfort Room', 'location': 'Sugbo Mercado It Park', 'rating': 3.8},
+    {'name': 'SM City Cebu Restroom', 'location': '2rd Floor', 'rating': 4.2},
+    {'name': 'SM City Consolacion Restroom', 'location': '2rd Floor, Food court', 'rating': 4.1},
+    {'name': 'Ayala Center Cebu Restroom', 'location': 'Upper Ground Floor', 'rating': 3.9},
+    {'name': 'Jollibee Filinvest', 'location': 'Filinvest Tower 2nd Floor', 'rating': 4.3},
+    {'name': 'Sindos Comfort Room', 'location': 'Canduman, Mandaue City', 'rating': 4.0},
   ];
 
   @override
@@ -135,72 +104,14 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                 ),
                 const SizedBox(height: 16),
 
-                // 🔍 Search Bar
+                // 🔍 Combined Search and Filter Bar
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.orange, width: 1),
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: Row(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12.0),
-                          child: Icon(Icons.search, color: Colors.orange),
-                        ),
-                        Expanded(
-                          child: TextField(
-                            controller: _searchController,
-                            onChanged: _onSearchChanged,
-                            keyboardType: TextInputType.text,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Search by name...',
-                              hintStyle: TextStyle(
-                                color: Color.fromARGB(255, 138, 138, 138),
-                              ),
-                              isDense: true,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // ⭐ Rating Filter Dropdown
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
-                  child: Row(
-                    children: [
-                      const Text("Filter by rating:"),
-                      const SizedBox(width: 10),
-                      DropdownButton<double>(
-                        value: _selectedRating,
-                        hint: const Text("All"),
-                        items: [null, 1, 2, 3, 4, 5].map((value) {
-                          if (value == null) {
-                            return const DropdownMenuItem<double>(
-                              value: null,
-                              child: Text("All"),
-                            );
-                          } else {
-                            return DropdownMenuItem<double>(
-                              value: value.toDouble(),
-                              child: Row(
-                                children: List.generate(
-                                  value,
-                                  (_) => const Icon(Icons.star, color: Colors.orange, size: 16),
-                                ),
-                              ),
-                            );
-                          }
-                        }).toList(),
-                        onChanged: _onRatingFilterChanged,
-                      ),
-                    ],
+                  child: SearchFilterBar(
+                    controller: _searchController,
+                    selectedRating: _selectedRating,
+                    onSearchChanged: _onSearchChanged,
+                    onRatingFilterChanged: _onRatingFilterChanged,
                   ),
                 ),
 
@@ -225,15 +136,11 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
 
                 const SizedBox(height: 21),
 
-                // Recommendations header
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.0),
                   child: Text(
                     "Recommendations near you",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                 ),
                 const SizedBox(height: 19),
@@ -289,22 +196,10 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                                     });
                                   },
                                 ),
-                                const Text(
-                                  "Recents",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                ),
+                                const Text("Recents", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                               ],
                             )
-                          : const Text(
-                              "Recents",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
+                          : const Text("Recents", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                       !_showAllRecents
                           ? GestureDetector(
                               onTap: () {
@@ -312,10 +207,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                                   _showAllRecents = true;
                                 });
                               },
-                              child: const Text(
-                                "See More",
-                                style: TextStyle(color: Colors.orange, fontSize: 16),
-                              ),
+                              child: const Text("See More", style: TextStyle(color: Colors.orange, fontSize: 16)),
                             )
                           : const SizedBox.shrink(),
                     ],
@@ -330,9 +222,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                     padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 6.0),
                     child: Card(
                       elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       child: ListTile(
                         leading: const Icon(Icons.wc, color: Colors.orange),
                         title: Text(bathroom['name']),
