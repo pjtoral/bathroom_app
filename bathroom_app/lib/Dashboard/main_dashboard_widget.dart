@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:bathroom_app/views/search_utils.dart';
 import 'recommendations_carrousel.dart';
 import 'package:bathroom_app/Dashboard/filter_popup.dart';
+import 'place_info.dart'; // <-- Add this import
 
 class MainDashboardWidget extends StatefulWidget {
   const MainDashboardWidget({super.key});
@@ -26,18 +27,24 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
   bool _showAllRecents = false;
 
   static final List<Map<String, dynamic>> recentBathrooms = [
-    {'name': 'Ayala Central BLoc', 'location': '2nd Floor', 'rating': 4.5},
+    {'name': 'Ayala - CBlock',
+      'location': '2nd Floor, Ayala Central Bloc Cebu, Cebu City',
+      'rating': 4.5
+    },
+     
     {
-      'name': 'iAcademy Comfort Room',
-      'location': 'Filinvest 5th Floor',
+      'name': 'The walk',
+      'location': 'Ayala Central Bloc Cebu, Cebu City',
       'rating': 4.0,
     },
     {
-      'name': 'Sugbu Mercado Comfort Room',
-      'location': 'Sugbo Mercado It Park',
+      'name': 'IT Park Terminal',
+      'location': 'IT Park, Cebu City',
       'rating': 3.8,
     },
-    {'name': 'SM City Cebu Restroom', 'location': '2rd Floor', 'rating': 4.2},
+    {'name': 'iAcademy Comfort Room',
+     'location': '5th Floor, Filinvest Tower 2, Cebu City', 
+     'rating': 4.2},
     {
       'name': 'SM City Consolacion Restroom',
       'location': '2rd Floor, Food court',
@@ -208,33 +215,54 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                   height: 340,
                   child: PageView(
                     controller: PageController(viewportFraction: 0.85),
-                    children: const [
-                      RecommendationCard(
-                        title: "Stephen cr",
-                        rating: 4.8,
-                        reviews: 31,
-                        photos: 18,
-                        description:
-                            "wow! so clean and so fresh! the albratoss provided was scrumptious!",
-                        author: "anonymous",
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => const PlaceInfoPage()),
+                          );
+                        },
+                        child: const RecommendationCard(
+                          title: "Stephen cr",
+                          rating: 4.8,
+                          reviews: 31,
+                          photos: 18,
+                          description:
+                              "wow! so clean and so fresh! the albratoss provided was scrumptious!",
+                          author: "anonymous",
+                        ),
                       ),
-                      RecommendationCard(
-                        title: "mjart cr",
-                        rating: 3.8,
-                        reviews: 311,
-                        photos: 26,
-                        description:
-                            "why is it raining so hard today, I cant go to the gym",
-                        author: "anonymous",
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => const PlaceInfoPage()),
+                          );
+                        },
+                        child: const RecommendationCard(
+                          title: "mjart cr",
+                          rating: 3.8,
+                          reviews: 311,
+                          photos: 26,
+                          description:
+                              "why is it raining so hard today, I cant go to the gym",
+                          author: "anonymous",
+                        ),
                       ),
-                      RecommendationCard(
-                        title: "rafile cr",
-                        rating: 100.8,
-                        reviews: 571,
-                        photos: 8153,
-                        description:
-                            "wowowowowowowoowowowowoowowowowowoowowowowowowooowwoowo",
-                        author: "anonymous",
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => const PlaceInfoPage()),
+                          );
+                        },
+                        child: const RecommendationCard(
+                          title: "rafile cr",
+                          rating: 100.8,
+                          reviews: 571,
+                          photos: 8153,
+                          description:
+                              "wowowowowowowoowowowowoowowowowowoowowowowowowooowwoowo",
+                          author: "anonymous",
+                        ),
                       ),
                     ],
                   ),
@@ -327,6 +355,11 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                             Text(bathroom['rating'].toString()),
                           ],
                         ),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => const PlaceInfoPage()),
+                          );
+                        },
                       ),
                     ),
                   ),
