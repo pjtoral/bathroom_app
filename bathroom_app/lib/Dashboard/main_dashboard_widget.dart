@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:bathroom_app/views/search_utils.dart';
 import 'recommendations_carrousel.dart';
 import 'package:bathroom_app/Dashboard/filter_popup.dart';
-import 'place_info.dart'; // <-- Add this import
+import 'place_info.dart';
 
 class MainDashboardWidget extends StatefulWidget {
   const MainDashboardWidget({super.key});
@@ -22,16 +22,14 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
     'CR - Admin Wing',
   ];
 
-  List<String> searchResults = [];
-
   bool _showAllRecents = false;
 
   static final List<Map<String, dynamic>> recentBathrooms = [
-    {'name': 'Ayala - CBlock',
+    {
+      'name': 'Ayala - CBlock',
       'location': '2nd Floor, Ayala Central Bloc Cebu, Cebu City',
       'rating': 4.5
     },
-     
     {
       'name': 'The walk',
       'location': 'Ayala Central Bloc Cebu, Cebu City',
@@ -42,47 +40,16 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
       'location': 'IT Park, Cebu City',
       'rating': 3.8,
     },
-    {'name': 'iAcademy Comfort Room',
-     'location': '5th Floor, Filinvest Tower 2, Cebu City', 
-     'rating': 4.2},
     {
-      'name': 'SM City Consolacion Restroom',
-      'location': '2rd Floor, Food court',
-      'rating': 4.1,
-    },
-    {
-      'name': 'Ayala Center Cebu Restroom',
-      'location': 'Upper Ground Floor',
-      'rating': 3.9,
-    },
-    {
-      'name': 'Jollibee Filinvest',
-      'location': 'Filinvest Tower 2nd Floor',
-      'rating': 4.3,
-    },
-    {
-      'name': 'Sindos Comfort Room',
-      'location': 'Canduman, Mandaue City',
-      'rating': 4.0,
+      'name': 'iAcademy Comfort Room',
+      'location': '5th Floor, Filinvest Tower 2, Cebu City',
+      'rating': 4.2
     },
   ];
-
-  @override
-  void initState() {
-    super.initState();
-    searchResults = comfortRooms;
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
 
   void _onSearchChanged(String value) {
     setState(() {
       searchText = value;
-      // searchResults = filterSearchResults(value, comfortRooms);
     });
   }
 
@@ -90,6 +57,9 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
   Widget build(BuildContext context) {
     final recentsToShow =
         _showAllRecents ? recentBathrooms : recentBathrooms.take(4).toList();
+    final filteredResults = comfortRooms
+        .where((item) => item.toLowerCase().contains(searchText.toLowerCase()))
+        .toList();
 
     return DraggableScrollableSheet(
       initialChildSize: 0.101,
@@ -163,9 +133,8 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                               context: context,
                               isScrollControlled: true,
                               shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(16),
-                                ),
+                                borderRadius:
+                                    BorderRadius.vertical(top: Radius.circular(16)),
                               ),
                               builder: (context) => const FilterPopup(),
                             );
@@ -182,47 +151,55 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
 
                 const SizedBox(height: 21),
 
-                // 🔍 Display Results
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children:
-                        searchResults.map((item) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Text(
-                              item,
-                              style: const TextStyle(fontSize: 16),
+                // 🔍 Search Results
+                if (searchText.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                    child: Column(
+                      children: filteredResults.map((item) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 6.0),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                          );
-                        }).toList(),
+                            elevation: 2,
+                            child: ListTile(
+                              leading: const Icon(Icons.location_on,
+                                  color: Colors.orange),
+                              title: Text(item,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold)),
+                              subtitle: const Text(
+                                  'Block 11, Garden Row, Abad St, Cebu City, 6000 Cebu'),
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (_) => const PlaceInfoPage()),
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
                   ),
-                ),
 
-                const SizedBox(height: 21),
-
-                // Recommendations header
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Text(
-                    "Recommendations near you",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                if (searchText.isEmpty) ...[
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Text(
+                      "Recommendations near you",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 19),
-                SizedBox(
-                  height: 340,
-                  child: PageView(
-                    controller: PageController(viewportFraction: 0.85),
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => const PlaceInfoPage()),
-                          );
-                        },
-                        child: const RecommendationCard(
+                  const SizedBox(height: 19),
+                  SizedBox(
+                    height: 340,
+                    child: PageView(
+                      controller: PageController(viewportFraction: 0.85),
+                      children: [
+                        const RecommendationCard(
                           title: "Stephen cr",
                           rating: 4.8,
                           reviews: 31,
@@ -231,14 +208,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                               "wow! so clean and so fresh! the albratoss provided was scrumptious!",
                           author: "anonymous",
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => const PlaceInfoPage()),
-                          );
-                        },
-                        child: const RecommendationCard(
+                        const RecommendationCard(
                           title: "mjart cr",
                           rating: 3.8,
                           reviews: 311,
@@ -247,66 +217,26 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                               "why is it raining so hard today, I cant go to the gym",
                           author: "anonymous",
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => const PlaceInfoPage()),
-                          );
-                        },
-                        child: const RecommendationCard(
-                          title: "rafile cr",
-                          rating: 100.8,
-                          reviews: 571,
-                          photos: 8153,
-                          description:
-                              "wowowowowowowoowowowowoowowowowowoowowowowowowooowwoowo",
-                          author: "anonymous",
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
-                // Recents header with See More or Back
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _showAllRecents
-                          ? Row(
-                            children: [
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.arrow_back,
-                                  color: Colors.orange,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _showAllRecents = false;
-                                  });
-                                },
-                              ),
-                              const Text(
-                                "Recents",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ],
-                          )
-                          : const Text(
-                            "Recents",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
+                  // Recents Header
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Recents",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
                           ),
-                      !_showAllRecents
-                          ? GestureDetector(
+                        ),
+                        if (!_showAllRecents)
+                          GestureDetector(
                             onTap: () {
                               setState(() {
                                 _showAllRecents = true;
@@ -320,50 +250,46 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                               ),
                             ),
                           )
-                          : const SizedBox.shrink(),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // Recents list
-                ...recentsToShow.map(
-                  (bathroom) => Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 18.0,
-                      vertical: 6.0,
+                      ],
                     ),
-                    child: Card(
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: ListTile(
-                        leading: const Icon(Icons.wc, color: Colors.orange),
-                        title: Text(bathroom['name']),
-                        subtitle: Text(bathroom['location']),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                              size: 20,
-                            ),
-                            const SizedBox(width: 4),
-                            Text(bathroom['rating'].toString()),
-                          ],
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Recents List
+                  ...recentsToShow.map(
+                    (bathroom) => Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 18.0, vertical: 6.0),
+                      child: Card(
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => const PlaceInfoPage()),
-                          );
-                        },
+                        child: ListTile(
+                          leading:
+                              const Icon(Icons.wc, color: Colors.orange),
+                          title: Text(bathroom['name']),
+                          subtitle: Text(bathroom['location']),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.star,
+                                  color: Colors.amber, size: 20),
+                              const SizedBox(width: 4),
+                              Text(bathroom['rating'].toString()),
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) => const PlaceInfoPage()),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ],
             ),
           ),
