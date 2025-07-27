@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bathroom_app/views/search_utils.dart';
+import 'package:bathroom_app/views/search_filter_bar.dart';
 import 'recommendations_carrousel.dart';
 import 'package:bathroom_app/Dashboard/filter_popup.dart';
 
@@ -13,15 +14,8 @@ class MainDashboardWidget extends StatefulWidget {
 class _MainDashboardWidgetState extends State<MainDashboardWidget> {
   final TextEditingController _searchController = TextEditingController();
   String searchText = '';
-  List<String> comfortRooms = [
-    'CR - Ground Floor',
-    'CR - 2nd Floor',
-    'CR - Near Cafeteria',
-    'CR - Library Side',
-    'CR - Admin Wing',
-  ];
-
-  List<String> searchResults = [];
+  double? _selectedRating;
+  List<Map<String, dynamic>> filteredBathrooms = [];
 
   bool _showAllRecents = false;
 
@@ -58,12 +52,19 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
       'location': 'Canduman, Mandaue City',
       'rating': 4.0,
     },
+    {'name': 'iAcademy Comfort Room', 'location': 'Filinvest 5th Floor', 'rating': 4.0},
+    {'name': 'Sugbu Mercado Comfort Room', 'location': 'Sugbo Mercado It Park', 'rating': 3.8},
+    {'name': 'SM City Cebu Restroom', 'location': '2rd Floor', 'rating': 4.2},
+    {'name': 'SM City Consolacion Restroom', 'location': '2rd Floor, Food court', 'rating': 4.1},
+    {'name': 'Ayala Center Cebu Restroom', 'location': 'Upper Ground Floor', 'rating': 3.9},
+    {'name': 'Jollibee Filinvest', 'location': 'Filinvest Tower 2nd Floor', 'rating': 4.3},
+    {'name': 'Sindos Comfort Room', 'location': 'Canduman, Mandaue City', 'rating': 4.0},
   ];
 
   @override
   void initState() {
     super.initState();
-    searchResults = comfortRooms;
+    filteredBathrooms = recentBathrooms;
   }
 
   @override
@@ -75,7 +76,22 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
   void _onSearchChanged(String value) {
     setState(() {
       searchText = value;
-      searchResults = filterSearchResults(value, comfortRooms);
+      filteredBathrooms = filterSearchResults(
+        query: value,
+        data: recentBathrooms,
+        minRating: _selectedRating,
+      );
+    });
+  }
+
+  void _onRatingFilterChanged(double? value) {
+    setState(() {
+      _selectedRating = value;
+      filteredBathrooms = filterSearchResults(
+        query: searchText,
+        data: recentBathrooms,
+        minRating: _selectedRating,
+      );
     });
   }
 
@@ -120,11 +136,9 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                   ),
                 ),
                 const SizedBox(height: 16),
-
-                // 🔍 Search Bar
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  child: Container(
+                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Colors.orange, width: 1),
@@ -170,12 +184,14 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                         ),
                       ],
                     ),
+                     child: SearchFilterBar(
+                    controller: _searchController,
+                    selectedRating: _selectedRating,
+                    onSearchChanged: _onSearchChanged,
+                    onRatingFilterChanged: _onRatingFilterChanged,
                   ),
                 ),
-
-                const SizedBox(height: 21),
-
-                // 🔍 Display Results
+                const SizedBox(height: 16),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18.0),
                   child: Column(
@@ -190,12 +206,36 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                             ),
                           );
                         }).toList(),
+                    children: filteredBathrooms.map((item) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 6.0),
+                        child: Card(
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: ListTile(
+                            leading: const Icon(Icons.place, color: Colors.orange, size: 28),
+                            title: Text(
+                              item['name'],
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Text(item['location']),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(Icons.star, color: Colors.amber, size: 18),
+                                const SizedBox(width: 4),
+                                Text(item['rating'].toString()),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ),
-
                 const SizedBox(height: 21),
-
-                // Recommendations header
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.0),
                   child: Text(
@@ -229,7 +269,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                       ),
                       RecommendationCard(
                         title: "rafile cr",
-                        rating: 100.8,
+                        rating: 5.8,
                         reviews: 571,
                         photos: 8153,
                         description:
@@ -240,8 +280,6 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                   ),
                 ),
                 const SizedBox(height: 16),
-
-                // Recents header with See More or Back
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Row(
@@ -292,14 +330,24 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                               ),
                             ),
                           )
+                      const Text("Recents", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                              ],
+                            )
+                          : const Text("Recents", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                      !_showAllRecents
+                          ? GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _showAllRecents = true;
+                                });
+                              },
+                              child: const Text("See More", style: TextStyle(color: Colors.orange, fontSize: 16)),
+                            )
                           : const SizedBox.shrink(),
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 16),
-
-                // Recents list
                 ...recentsToShow.map(
                   (bathroom) => Padding(
                     padding: const EdgeInsets.symmetric(
@@ -308,9 +356,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                     ),
                     child: Card(
                       elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       child: ListTile(
                         leading: const Icon(Icons.wc, color: Colors.orange),
                         title: Text(bathroom['name']),
