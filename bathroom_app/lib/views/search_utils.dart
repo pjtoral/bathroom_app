@@ -15,8 +15,7 @@ List<Map<String, dynamic>> filterSearchResults({
     final rating = (item['rating'] as num).toDouble();
     final matchesRating = minRating == null ? true : (rating >= minRating);
 
-    // 3) Tags match: if tags list is empty or null, accept all;
-    //    otherwise, every selected tag must be present in item's tags.
+    // 3) Tags match
     final itemTags = (item['tags'] as List<dynamic>?)
             ?.map((t) => t.toString())
             .toList() ??

@@ -28,7 +28,6 @@ class SearchFilterBar extends StatelessWidget {
       'Trash Bin', 'Urinal'
     ];
 
-    // local mutable copies
     List<String> tempSelectedTags = List.from(selectedTags);
     double? tempRating = selectedRating;
 
@@ -57,11 +56,9 @@ class SearchFilterBar extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Text('Filter',
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 16),
 
-                // — Sort by Rating —
                 Align(
                   alignment: Alignment.centerLeft,
                   child: const Text('Sort by',
@@ -90,21 +87,18 @@ class SearchFilterBar extends StatelessWidget {
                             child: Row(
                               children: List.generate(
                                 value,
-                                (_) => const Icon(Icons.star,
-                                    color: Colors.orange, size: 16),
+                                (_) => const Icon(Icons.star, color: Colors.orange, size: 16),
                               ),
                             ),
                           );
                         }).toList(),
-                        onChanged: (v) =>
-                            setSheetState(() => tempRating = v),
+                        onChanged: (v) => setSheetState(() => tempRating = v),
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 24),
 
-                // — Include Tags —
                 Align(
                   alignment: Alignment.centerLeft,
                   child: const Text('Include Tags',
@@ -119,7 +113,7 @@ class SearchFilterBar extends StatelessWidget {
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
                         isExpanded: true,
-                        value: null, // always show hint
+                        value: null,
                         hint: Text(
                           tempSelectedTags.isEmpty
                               ? 'None'
@@ -151,7 +145,6 @@ class SearchFilterBar extends StatelessWidget {
                           );
                         }).toList(),
                         onChanged: (tag) {
-                          // also toggle if tapped outside checkbox
                           if (tag == null) return;
                           setSheetState(() {
                             if (tempSelectedTags.contains(tag)) {
@@ -167,7 +160,6 @@ class SearchFilterBar extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
 
-                // — Apply Button —
                 ElevatedButton(
                   onPressed: () {
                     onRatingFilterChanged(tempRating);
@@ -176,10 +168,8 @@ class SearchFilterBar extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 14, horizontal: 32),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                    padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 32),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
                   child: const Text('Apply',
                       style: TextStyle(fontWeight: FontWeight.bold)),
@@ -215,7 +205,8 @@ class SearchFilterBar extends StatelessWidget {
                 border: InputBorder.none,
                 hintText: 'Find nearest comfort room',
                 hintStyle: TextStyle(
-                    color: Color.fromARGB(255, 138, 138, 138)),
+                  color: Color.fromARGB(255, 138, 138, 138),
+                ),
                 isDense: true,
               ),
             ),
