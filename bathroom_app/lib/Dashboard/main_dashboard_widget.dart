@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:bathroom_app/views/search_utils.dart'; 
+import 'package:bathroom_app/views/search_utils.dart';
 import 'recommendations_carrousel.dart';
+import 'package:bathroom_app/Dashboard/filter_popup.dart';
 
 class MainDashboardWidget extends StatefulWidget {
   const MainDashboardWidget({super.key});
@@ -25,11 +26,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
   bool _showAllRecents = false;
 
   static final List<Map<String, dynamic>> recentBathrooms = [
-    {
-      'name': 'Ayala Central BLoc',
-      'location': '2nd Floor',
-      'rating': 4.5,
-    },
+    {'name': 'Ayala Central BLoc', 'location': '2nd Floor', 'rating': 4.5},
     {
       'name': 'iAcademy Comfort Room',
       'location': 'Filinvest 5th Floor',
@@ -40,11 +37,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
       'location': 'Sugbo Mercado It Park',
       'rating': 3.8,
     },
-    {
-      'name': 'SM City Cebu Restroom',
-      'location': '2rd Floor',
-      'rating': 4.2,
-    },
+    {'name': 'SM City Cebu Restroom', 'location': '2rd Floor', 'rating': 4.2},
     {
       'name': 'SM City Consolacion Restroom',
       'location': '2rd Floor, Food court',
@@ -88,7 +81,8 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final recentsToShow = _showAllRecents ? recentBathrooms : recentBathrooms.take(4).toList();
+    final recentsToShow =
+        _showAllRecents ? recentBathrooms : recentBathrooms.take(4).toList();
 
     return DraggableScrollableSheet(
       initialChildSize: 0.101,
@@ -156,9 +150,23 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          child: Icon(Icons.tune, color: Colors.orange),
+                        GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(16),
+                                ),
+                              ),
+                              builder: (context) => const FilterPopup(),
+                            );
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12.0),
+                            child: Icon(Icons.tune, color: Colors.orange),
+                          ),
                         ),
                       ],
                     ),
@@ -172,12 +180,16 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                   padding: const EdgeInsets.symmetric(horizontal: 18.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: searchResults.map((item) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(item, style: const TextStyle(fontSize: 16)),
-                      );
-                    }).toList(),
+                    children:
+                        searchResults.map((item) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              item,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          );
+                        }).toList(),
                   ),
                 ),
 
@@ -188,10 +200,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                   padding: EdgeInsets.symmetric(horizontal: 20.0),
                   child: Text(
                     "Recommendations near you",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                 ),
                 const SizedBox(height: 19),
@@ -205,7 +214,8 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                         rating: 4.8,
                         reviews: 31,
                         photos: 18,
-                        description: "wow! so clean and so fresh! the albratoss provided was scrumptious!",
+                        description:
+                            "wow! so clean and so fresh! the albratoss provided was scrumptious!",
                         author: "anonymous",
                       ),
                       RecommendationCard(
@@ -213,7 +223,8 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                         rating: 3.8,
                         reviews: 311,
                         photos: 26,
-                        description: "why is it raining so hard today, I cant go to the gym",
+                        description:
+                            "why is it raining so hard today, I cant go to the gym",
                         author: "anonymous",
                       ),
                       RecommendationCard(
@@ -221,7 +232,8 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                         rating: 100.8,
                         reviews: 571,
                         photos: 8153,
-                        description: "wowowowowowowoowowowowoowowowowowoowowowowowowooowwoowo",
+                        description:
+                            "wowowowowowowoowowowowoowowowowowoowowowowowowooowwoowo",
                         author: "anonymous",
                       ),
                     ],
@@ -237,43 +249,49 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                     children: [
                       _showAllRecents
                           ? Row(
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.arrow_back, color: Colors.orange),
-                                  onPressed: () {
-                                    setState(() {
-                                      _showAllRecents = false;
-                                    });
-                                  },
+                            children: [
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.orange,
                                 ),
-                                const Text(
-                                  "Recents",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ],
-                            )
-                          : const Text(
-                              "Recents",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                                onPressed: () {
+                                  setState(() {
+                                    _showAllRecents = false;
+                                  });
+                                },
                               ),
+                              const Text(
+                                "Recents",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          )
+                          : const Text(
+                            "Recents",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
                             ),
+                          ),
                       !_showAllRecents
                           ? GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _showAllRecents = true;
-                                });
-                              },
-                              child: const Text(
-                                "See More",
-                                style: TextStyle(color: Colors.orange, fontSize: 16),
+                            onTap: () {
+                              setState(() {
+                                _showAllRecents = true;
+                              });
+                            },
+                            child: const Text(
+                              "See More",
+                              style: TextStyle(
+                                color: Colors.orange,
+                                fontSize: 16,
                               ),
-                            )
+                            ),
+                          )
                           : const SizedBox.shrink(),
                     ],
                   ),
@@ -284,7 +302,10 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                 // Recents list
                 ...recentsToShow.map(
                   (bathroom) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 6.0),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 18.0,
+                      vertical: 6.0,
+                    ),
                     child: Card(
                       elevation: 2,
                       shape: RoundedRectangleBorder(
@@ -297,7 +318,11 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.star, color: Colors.amber, size: 20),
+                            const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                              size: 20,
+                            ),
                             const SizedBox(width: 4),
                             Text(bathroom['rating'].toString()),
                           ],
