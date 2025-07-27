@@ -12,6 +12,7 @@ class MainDashboardWidget extends StatefulWidget {
 class _MainDashboardWidgetState extends State<MainDashboardWidget> {
   final TextEditingController _searchController = TextEditingController();
   String searchText = '';
+  double? _selectedRating; // ⭐ Rating filter
   List<Map<String, dynamic>> filteredBathrooms = [];
 
   bool _showAllRecents = false;
@@ -77,6 +78,18 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
       filteredBathrooms = filterSearchResults(
         query: value,
         data: recentBathrooms,
+        minRating: _selectedRating,
+      );
+    });
+  }
+
+  void _onRatingFilterChanged(double? value) {
+    setState(() {
+      _selectedRating = value;
+      filteredBathrooms = filterSearchResults(
+        query: searchText,
+        data: recentBathrooms,
+        minRating: _selectedRating,
       );
     });
   }
@@ -141,10 +154,10 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                           child: TextField(
                             controller: _searchController,
                             onChanged: _onSearchChanged,
-                            keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.text,
                             decoration: const InputDecoration(
                               border: InputBorder.none,
-                              hintText: 'Enter rating (1–5)',
+                              hintText: 'Search by name...',
                               hintStyle: TextStyle(
                                 color: Color.fromARGB(255, 138, 138, 138),
                               ),
@@ -152,16 +165,46 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                             ),
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12.0),
-                          child: Icon(Icons.star, color: Colors.orange),
-                        ),
                       ],
                     ),
                   ),
                 ),
 
-                const SizedBox(height: 21),
+                // ⭐ Rating Filter Dropdown
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
+                  child: Row(
+                    children: [
+                      const Text("Filter by rating:"),
+                      const SizedBox(width: 10),
+                      DropdownButton<double>(
+                        value: _selectedRating,
+                        hint: const Text("All"),
+                        items: [null, 1, 2, 3, 4, 5].map((value) {
+                          if (value == null) {
+                            return const DropdownMenuItem<double>(
+                              value: null,
+                              child: Text("All"),
+                            );
+                          } else {
+                            return DropdownMenuItem<double>(
+                              value: value.toDouble(),
+                              child: Row(
+                                children: List.generate(
+                                  value,
+                                  (_) => const Icon(Icons.star, color: Colors.orange, size: 16),
+                                ),
+                              ),
+                            );
+                          }
+                        }).toList(),
+                        onChanged: _onRatingFilterChanged,
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 16),
 
                 // 🔍 Display Results
                 Padding(
@@ -226,6 +269,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                     ],
                   ),
                 ),
+
                 const SizedBox(height: 16),
 
                 // Recents header

@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=C:\Users\User\flutter"
-export "FLUTTER_APPLICATION_PATH=C:\Users\Public\SchoolFlutterProjects\bathroom_app\bathroom_app"
+export "FLUTTER_ROOT=C:\Users\stakezy\flutter"
+export "FLUTTER_APPLICATION_PATH=C:\Users\stakezy\Documents\bathroom_app\bathroom_app"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib\main.dart"
 export "FLUTTER_BUILD_DIR=build"

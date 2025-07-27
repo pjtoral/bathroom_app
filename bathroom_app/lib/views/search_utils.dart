@@ -1,12 +1,12 @@
 List<Map<String, dynamic>> filterSearchResults({
   required String query,
   required List<Map<String, dynamic>> data,
+  double? minRating,
 }) {
-  final rating = double.tryParse(query);
-  if (rating == null) return [];
-
   return data.where((item) {
-    final itemRating = item['rating'];
-    return itemRating >= rating && itemRating < rating + 1;
+    final name = item['name'].toString().toLowerCase();
+    final matchesName = name.contains(query.toLowerCase());
+    final matchesRating = minRating == null || item['rating'] >= minRating;
+    return matchesName && matchesRating;
   }).toList();
 }
