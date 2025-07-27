@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bathroom_app/Dashboard/upload.dart';
+import 'package:bathroom_app/Dashboard/edit_profile.dart'; 
 
 class AccountPopup extends StatelessWidget {
   const AccountPopup({super.key});
@@ -70,8 +71,12 @@ class AccountPopup extends StatelessWidget {
                   label: 'Edit Account',
                   iconColor: Colors.black,
                   onTap: () {
-                    Navigator.of(context).pop();
-                    // Add your edit account logic here
+                    Navigator.of(context).pop(); // Close bottom sheet
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const EditProfilePage(),
+                      ),
+                    );
                   },
                 ),
                 const Divider(height: 1),
@@ -82,7 +87,6 @@ class AccountPopup extends StatelessWidget {
                   iconColor: Colors.black,
                   onTap: () {
                     Navigator.of(context).pop();
-
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const UploadPage(),
@@ -98,7 +102,7 @@ class AccountPopup extends StatelessWidget {
                   iconColor: Colors.red,
                   onTap: () {
                     Navigator.of(context).pop();
-                    // Add your logout logic here
+                    // Add logout logic here
                   },
                 ),
               ],
