@@ -125,7 +125,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: ListTile(
-                            leading: const Icon(Icons.place, color: Colors.deepPurple, size: 28),
+                            leading: const Icon(Icons.place, color: Colors.orange, size: 28),
                             title: Text(
                               item['name'],
                               style: const TextStyle(fontWeight: FontWeight.bold),
