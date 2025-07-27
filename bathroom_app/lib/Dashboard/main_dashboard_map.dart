@@ -1,9 +1,11 @@
+import 'package:bathroom_app/Dashboard/account.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:bathroom_app/Dashboard/main_dashboard_widget.dart';
 import 'package:bathroom_app/Dashboard/map_utils/map_marker.dart';
 import 'package:bathroom_app/Dashboard/map_utils/map_data.dart';
+import 'package:bathroom_app/Dashboard/mini_account.dart';
 
 class DashboardMap extends StatefulWidget {
   const DashboardMap({super.key});
@@ -14,6 +16,7 @@ class DashboardMap extends StatefulWidget {
 
 class _DashboardMapState extends State<DashboardMap> {
   static const LatLng tempLocation = LatLng(10.3280, 123.9063);
+  bool _showAccountPopup = false;
 
   String? _mapStyle;
   final Set<Marker> _markers = {};
@@ -51,6 +54,20 @@ class _DashboardMapState extends State<DashboardMap> {
     }
   }
 
+  void _togglePopup() {
+    setState(() {
+      _showAccountPopup = !_showAccountPopup;
+    });
+  }
+
+  void _dismissPopup() {
+    if (_showAccountPopup) {
+      setState(() {
+        _showAccountPopup = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,6 +91,7 @@ class _DashboardMapState extends State<DashboardMap> {
               ),
             ),
           const MainDashboardWidget(),
+          AccountIcon(),
         ],
       ),
     );

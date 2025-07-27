@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:bathroom_app/views/search_utils.dart';
 import 'package:bathroom_app/views/search_filter_bar.dart';
 import 'recommendations_carrousel.dart';
+import 'package:bathroom_app/Dashboard/filter_popup.dart';
 
 class MainDashboardWidget extends StatefulWidget {
   const MainDashboardWidget({super.key});
@@ -20,6 +21,37 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
 
   static final List<Map<String, dynamic>> recentBathrooms = [
     {'name': 'Ayala Central BLoc', 'location': '2nd Floor', 'rating': 4.5},
+    {
+      'name': 'iAcademy Comfort Room',
+      'location': 'Filinvest 5th Floor',
+      'rating': 4.0,
+    },
+    {
+      'name': 'Sugbu Mercado Comfort Room',
+      'location': 'Sugbo Mercado It Park',
+      'rating': 3.8,
+    },
+    {'name': 'SM City Cebu Restroom', 'location': '2rd Floor', 'rating': 4.2},
+    {
+      'name': 'SM City Consolacion Restroom',
+      'location': '2rd Floor, Food court',
+      'rating': 4.1,
+    },
+    {
+      'name': 'Ayala Center Cebu Restroom',
+      'location': 'Upper Ground Floor',
+      'rating': 3.9,
+    },
+    {
+      'name': 'Jollibee Filinvest',
+      'location': 'Filinvest Tower 2nd Floor',
+      'rating': 4.3,
+    },
+    {
+      'name': 'Sindos Comfort Room',
+      'location': 'Canduman, Mandaue City',
+      'rating': 4.0,
+    },
     {'name': 'iAcademy Comfort Room', 'location': 'Filinvest 5th Floor', 'rating': 4.0},
     {'name': 'Sugbu Mercado Comfort Room', 'location': 'Sugbo Mercado It Park', 'rating': 3.8},
     {'name': 'SM City Cebu Restroom', 'location': '2rd Floor', 'rating': 4.2},
@@ -65,7 +97,8 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final recentsToShow = _showAllRecents ? recentBathrooms : recentBathrooms.take(4).toList();
+    final recentsToShow =
+        _showAllRecents ? recentBathrooms : recentBathrooms.take(4).toList();
 
     return DraggableScrollableSheet(
       initialChildSize: 0.101,
@@ -105,7 +138,53 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                 const SizedBox(height: 16),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  child: SearchFilterBar(
+                   child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.orange, width: 1),
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 12.0),
+                          child: Icon(Icons.search, color: Colors.orange),
+                        ),
+                        Expanded(
+                          child: TextField(
+                            controller: _searchController,
+                            onChanged: _onSearchChanged,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Find nearest comfort room',
+                              hintStyle: TextStyle(
+                                color: Color.fromARGB(255, 138, 138, 138),
+                              ),
+                              isDense: true,
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(16),
+                                ),
+                              ),
+                              builder: (context) => const FilterPopup(),
+                            );
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12.0),
+                            child: Icon(Icons.tune, color: Colors.orange),
+                          ),
+                        ),
+                      ],
+                    ),
+                     child: SearchFilterBar(
                     controller: _searchController,
                     selectedRating: _selectedRating,
                     onSearchChanged: _onSearchChanged,
@@ -116,6 +195,17 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children:
+                        searchResults.map((item) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              item,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          );
+                        }).toList(),
                     children: filteredBathrooms.map((item) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 6.0),
@@ -164,7 +254,8 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                         rating: 4.8,
                         reviews: 31,
                         photos: 18,
-                        description: "wow! so clean and so fresh! the albratoss provided was scrumptious!",
+                        description:
+                            "wow! so clean and so fresh! the albratoss provided was scrumptious!",
                         author: "anonymous",
                       ),
                       RecommendationCard(
@@ -172,7 +263,8 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                         rating: 3.8,
                         reviews: 311,
                         photos: 26,
-                        description: "why is it raining so hard today, I cant go to the gym",
+                        description:
+                            "why is it raining so hard today, I cant go to the gym",
                         author: "anonymous",
                       ),
                       RecommendationCard(
@@ -180,7 +272,8 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                         rating: 5.8,
                         reviews: 571,
                         photos: 8153,
-                        description: "wowowowowowowoowowowowoowowowowowoowowowowowowooowwoowo",
+                        description:
+                            "wowowowowowowoowowowowoowowowowowoowowowowowowooowwoowo",
                         author: "anonymous",
                       ),
                     ],
@@ -194,16 +287,50 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                     children: [
                       _showAllRecents
                           ? Row(
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.arrow_back, color: Colors.orange),
-                                  onPressed: () {
-                                    setState(() {
-                                      _showAllRecents = false;
-                                    });
-                                  },
+                            children: [
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.orange,
                                 ),
-                                const Text("Recents", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                                onPressed: () {
+                                  setState(() {
+                                    _showAllRecents = false;
+                                  });
+                                },
+                              ),
+                              const Text(
+                                "Recents",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          )
+                          : const Text(
+                            "Recents",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                      !_showAllRecents
+                          ? GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _showAllRecents = true;
+                              });
+                            },
+                            child: const Text(
+                              "See More",
+                              style: TextStyle(
+                                color: Colors.orange,
+                                fontSize: 16,
+                              ),
+                            ),
+                          )
+                      const Text("Recents", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                               ],
                             )
                           : const Text("Recents", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
@@ -223,7 +350,10 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                 const SizedBox(height: 16),
                 ...recentsToShow.map(
                   (bathroom) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 6.0),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 18.0,
+                      vertical: 6.0,
+                    ),
                     child: Card(
                       elevation: 2,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -234,7 +364,11 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.star, color: Colors.amber, size: 20),
+                            const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                              size: 20,
+                            ),
                             const SizedBox(width: 4),
                             Text(bathroom['rating'].toString()),
                           ],
