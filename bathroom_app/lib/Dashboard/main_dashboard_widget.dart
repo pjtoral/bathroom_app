@@ -103,8 +103,6 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                   ),
                 ),
                 const SizedBox(height: 16),
-
-                // 🔍 Combined Search and Filter Bar
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18.0),
                   child: SearchFilterBar(
@@ -114,28 +112,40 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                     onRatingFilterChanged: _onRatingFilterChanged,
                   ),
                 ),
-
                 const SizedBox(height: 16),
-
-                // 🔍 Display Results
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: filteredBathrooms.map((item) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(
-                          '${item['name']} — ${item['location']} (⭐ ${item['rating']})',
-                          style: const TextStyle(fontSize: 16),
+                        padding: const EdgeInsets.symmetric(vertical: 6.0),
+                        child: Card(
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: ListTile(
+                            leading: const Icon(Icons.place, color: Colors.deepPurple, size: 28),
+                            title: Text(
+                              item['name'],
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Text(item['location']),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(Icons.star, color: Colors.amber, size: 18),
+                                const SizedBox(width: 4),
+                                Text(item['rating'].toString()),
+                              ],
+                            ),
+                          ),
                         ),
                       );
                     }).toList(),
                   ),
                 ),
-
                 const SizedBox(height: 21),
-
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.0),
                   child: Text(
@@ -176,10 +186,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 16),
-
-                // Recents header
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Row(
@@ -213,10 +220,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 16),
-
-                // Recents list
                 ...recentsToShow.map(
                   (bathroom) => Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 6.0),
