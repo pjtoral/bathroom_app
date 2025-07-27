@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bathroom_app/Dashboard/edit_profile.dart'; // Ensure this path is correct
+import 'package:bathroom_app/Dashboard/upload.dart';
+import 'package:bathroom_app/Dashboard/edit_profile.dart'; 
 
 class AccountPopup extends StatelessWidget {
   const AccountPopup({super.key});
@@ -86,7 +87,11 @@ class AccountPopup extends StatelessWidget {
                   iconColor: Colors.black,
                   onTap: () {
                     Navigator.of(context).pop();
-                    // Add upload logic here
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const UploadPage(),
+                      ),
+                    );
                   },
                 ),
                 const Divider(height: 1),
