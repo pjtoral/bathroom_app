@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'reviews.dart';
 
 class PlaceInfoPage extends StatelessWidget {
   const PlaceInfoPage({super.key});
@@ -28,7 +29,7 @@ class PlaceInfoPage extends StatelessWidget {
                       children: [
                         Text(
                           "Ayala - CBlock",
-                          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(width: 8),
                         Container(
@@ -69,7 +70,7 @@ class PlaceInfoPage extends StatelessWidget {
                     SizedBox(height: 4),
                     Text(
                       "2nd Floor, Ayala Central Bloc Cebu, Cebu City",
-                      style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                      style: TextStyle(fontSize: 15, color: Colors.grey[700]),
                     ),
                     SizedBox(height: 8),
                     Row(
@@ -125,40 +126,95 @@ class PlaceInfoPage extends StatelessWidget {
                       )),
                     ),
                     SizedBox(height: 16),
-                    Text("Reviews", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                    SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Text("4.93", style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold)),
-                        SizedBox(width: 8),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("out of 5", style: TextStyle(fontSize: 14, color: Colors.grey[700])),
-                            Text("(30 reviews)", style: TextStyle(fontSize: 12, color: Colors.grey[500])),
-                          ],
-                        ),
-                        Spacer(),
-                        SizedBox(
-                          width: 100,
-                          height: 40,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                    // Make the Reviews section tappable
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => ReviewsScreen()),
+                        );
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Reviews", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                          SizedBox(height: 8),
+                          Row(
                             children: [
-                              LinearProgressIndicator(value: 0.8, color: Colors.orange, backgroundColor: Colors.grey[300]),
-                              SizedBox(height: 4),
-                              LinearProgressIndicator(value: 0.5, color: Colors.orange, backgroundColor: Colors.grey[300]),
-                              SizedBox(height: 4),
-                              LinearProgressIndicator(value: 0.2, color: Colors.orange, backgroundColor: Colors.grey[300]),
+                              // Rating and text in a column, centered
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text("4.93", style: TextStyle(fontSize: 70, fontWeight: FontWeight.bold)),
+                                  SizedBox(height: 2),
+                                  Text("out of 5", style: TextStyle(fontSize: 16, color: Colors.grey[700])),
+                                  SizedBox(height: 2),
+                                  Text("(30 reviews)", style: TextStyle(fontSize: 18, color: Colors.grey[500])),
+                                ],
+                              ),
+                              SizedBox(width: 16),
+                              Spacer(),
+                              SizedBox(
+                                width: 220,
+                                height: 70,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height: 8, // reduced from 10 to 8
+                                      child: LinearProgressIndicator(
+                                        value: 0.8,
+                                        color: Colors.orange,
+                                        backgroundColor: Colors.grey[300],
+                                      ),
+                                    ),
+                                    SizedBox(height: 6), // reduced from 8 to 6
+                                    SizedBox(
+                                      height: 8,
+                                      child: LinearProgressIndicator(
+                                        value: 0.5,
+                                        color: Colors.orange,
+                                        backgroundColor: Colors.grey[300],
+                                      ),
+                                    ),
+                                    SizedBox(height: 6),
+                                    SizedBox(
+                                      height: 8,
+                                      child: LinearProgressIndicator(
+                                        value: 0.2,
+                                        color: Colors.orange,
+                                        backgroundColor: Colors.grey[300],
+                                      ),
+                                    ),
+                                    SizedBox(height: 6),
+                                    SizedBox(
+                                      height: 8,
+                                      child: LinearProgressIndicator(
+                                        value: 0.2,
+                                        color: Colors.orange,
+                                        backgroundColor: Colors.grey[300],
+                                      ),
+                                    ),
+                                    SizedBox(height: 6),
+                                    SizedBox(
+                                      height: 8,
+                                      child: LinearProgressIndicator(
+                                        value: 0.2,
+                                        color: Colors.orange,
+                                        backgroundColor: Colors.grey[300],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     SizedBox(height: 16),
                     CarouselSlider(
                       options: CarouselOptions(
-                        height: 90,
+                        height: 160, // increased from 120 to 160
                         enableInfiniteScroll: false,
                         viewportFraction: 0.95,
                       ),
@@ -168,12 +224,14 @@ class PlaceInfoPage extends StatelessWidget {
                           rating: 5,
                           time: "1 month ago",
                           review: "Love the food and atmosphere here, very cozy",
+                          avatarUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=facearea&w=80&h=80&facepad=2", // sample image
                         ),
                         _reviewCard(
                           name: "Peler Newman",
                           rating: 5,
                           time: "1 month ago",
                           review: "This is my favorite place to work, I really like the vibe and location!",
+                          avatarUrl: "https://randomuser.me/api/portraits/men/32.jpg",
                         ),
                       ],
                     ),
@@ -218,33 +276,76 @@ class PlaceInfoPage extends StatelessWidget {
     );
   }
 
-  Widget _reviewCard({required String name, required int rating, required String time, required String review}) {
+  Widget _reviewCard({
+    required String name,
+    required int rating,
+    required String time,
+    required String review,
+    String? avatarUrl,
+  }) {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 4),
+      margin: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+      elevation: 0,
+      color: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(child: Icon(Icons.person)),
-            SizedBox(width: 8),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  radius: 24,
+                  backgroundImage: avatarUrl != null
+                      ? NetworkImage(avatarUrl)
+                      : null,
+                  child: avatarUrl == null
+                      ? Icon(Icons.person, size: 28)
+                      : null,
+                ),
+                SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
-                      SizedBox(width: 8),
-                      Row(
-                        children: List.generate(rating, (i) => Icon(Icons.star, color: Colors.orange, size: 14)),
+                      Text(
+                        name,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
                       ),
-                      SizedBox(width: 8),
-                      Text(time, style: TextStyle(fontSize: 10, color: Colors.grey[500])),
+                      Row(
+                        children: [
+                          ...List.generate(
+                            rating,
+                            (i) => Icon(Icons.star, color: Colors.orange, size: 20),
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            time,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[500],
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
-                  SizedBox(height: 4),
-                  Text(review, style: TextStyle(fontSize: 12)),
-                ],
+                ),
+              ],
+            ),
+            SizedBox(height: 8),
+            Text(
+              review,
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey[700],
+                fontWeight: FontWeight.normal,
               ),
             ),
           ],
