@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bathroom_app/Dashboard/upload.dart';
-import 'package:bathroom_app/Dashboard/edit_profile.dart'; 
+import 'package:bathroom_app/Dashboard/edit_profile.dart';
+import 'package:bathroom_app/Dashboard/notification_popup.dart';
 
 class AccountPopup extends StatelessWidget {
   const AccountPopup({super.key});
@@ -47,10 +48,20 @@ class AccountPopup extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(
-                Icons.notifications_none,
-                size: 32,
-                color: Colors.black87,
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop(); // Optional: close account popup
+                  showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (_) => const NotificationPopup(),
+                  );
+                },
+                child: const Icon(
+                  Icons.notifications_none,
+                  size: 32,
+                  color: Colors.black87,
+                ),
               ),
             ],
           ),
