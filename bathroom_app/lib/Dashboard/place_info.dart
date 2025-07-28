@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'reviews.dart';
 
-class PlaceInfoPage extends StatelessWidget {
+class PlaceInfoPage extends StatefulWidget {
   const PlaceInfoPage({super.key});
+
+  @override
+  State<PlaceInfoPage> createState() => _PlaceInfoPageState();
+}
+
+class _PlaceInfoPageState extends State<PlaceInfoPage> {
+  bool _isFavorited = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,26 +51,44 @@ class PlaceInfoPage extends StatelessWidget {
                           ),
                         ),
                         Spacer(),
-                        // Directions icon in orange circle
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.orange[700],
-                            shape: BoxShape.circle,
+                        // Directions icon in orange circle, now clickable
+                        GestureDetector(
+                          onTap: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Feature coming soon')),
+                            );
+                          },
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Colors.orange[700],
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(Icons.directions, color: Colors.white, size: 24),
                           ),
-                          child: Icon(Icons.directions, color: Colors.white, size: 24),
                         ),
                         SizedBox(width: 8),
-                        // Favorite icon in red-orange circle
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.deepOrange,
-                            shape: BoxShape.circle,
+                        // Favorite icon in red-orange circle, now clickable
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isFavorited = !_isFavorited;
+                            });
+                          },
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: _isFavorited ? Colors.red : Colors.deepOrange,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              _isFavorited ? Icons.favorite : Icons.favorite_border,
+                              color: Colors.white,
+                              size: 24,
+                            ),
                           ),
-                          child: Icon(Icons.favorite_border, color: Colors.white, size: 24),
                         ),
                       ],
                     ),
@@ -148,7 +173,18 @@ class PlaceInfoPage extends StatelessWidget {
                                   SizedBox(height: 2),
                                   Text("out of 5", style: TextStyle(fontSize: 16, color: Colors.grey[700])),
                                   SizedBox(height: 2),
-                                  Text("(30 reviews)", style: TextStyle(fontSize: 18, color: Colors.grey[500])),
+                                  // Make the (30 reviews) text also clickable
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(builder: (_) => ReviewsScreen()),
+                                      );
+                                    },
+                                    child: Text(
+                                      "(30 reviews)",
+                                      style: TextStyle(fontSize: 18, color: Colors.grey[500], decoration: TextDecoration.underline),
+                                    ),
+                                  ),
                                 ],
                               ),
                               SizedBox(width: 16),
@@ -160,14 +196,14 @@ class PlaceInfoPage extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     SizedBox(
-                                      height: 8, // reduced from 10 to 8
+                                      height: 8,
                                       child: LinearProgressIndicator(
                                         value: 0.8,
                                         color: Colors.orange,
                                         backgroundColor: Colors.grey[300],
                                       ),
                                     ),
-                                    SizedBox(height: 6), // reduced from 8 to 6
+                                    SizedBox(height: 6),
                                     SizedBox(
                                       height: 8,
                                       child: LinearProgressIndicator(
@@ -212,26 +248,41 @@ class PlaceInfoPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16),
+                    // Make each review card in the carousel clickable
                     CarouselSlider(
                       options: CarouselOptions(
-                        height: 160, // increased from 120 to 160
+                        height: 160,
                         enableInfiniteScroll: false,
                         viewportFraction: 0.95,
                       ),
                       items: [
-                        _reviewCard(
-                          name: "Jen wildoson",
-                          rating: 5,
-                          time: "1 month ago",
-                          review: "Love the food and atmosphere here, very cozy",
-                          avatarUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=facearea&w=80&h=80&facepad=2", // sample image
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => ReviewsScreen()),
+                            );
+                          },
+                          child: _reviewCard(
+                            name: "Jen wildoson",
+                            rating: 5,
+                            time: "1 month ago",
+                            review: "Love the food and atmosphere here, very cozy",
+                            avatarUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=facearea&w=80&h=80&facepad=2",
+                          ),
                         ),
-                        _reviewCard(
-                          name: "Peler Newman",
-                          rating: 5,
-                          time: "1 month ago",
-                          review: "This is my favorite place to work, I really like the vibe and location!",
-                          avatarUrl: "https://randomuser.me/api/portraits/men/32.jpg",
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => ReviewsScreen()),
+                            );
+                          },
+                          child: _reviewCard(
+                            name: "Peler Newman",
+                            rating: 5,
+                            time: "1 month ago",
+                            review: "This is my favorite place to work, I really like the vibe and location!",
+                            avatarUrl: "https://randomuser.me/api/portraits/men/32.jpg",
+                          ),
                         ),
                       ],
                     ),
