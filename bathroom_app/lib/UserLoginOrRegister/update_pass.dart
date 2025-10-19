@@ -11,7 +11,7 @@ class UpdatePasswordPage extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            color: const Color(0xFFFFA726),
+            color: const Color.fromARGB(255, 26, 130, 195),
             padding: const EdgeInsets.only(top: 50, left: 10),
             height: 150,
             width: double.infinity,
@@ -52,15 +52,15 @@ class UpdatePasswordPage extends StatelessWidget {
                     hintText: "Enter your Password",
                     suffixIcon: Icon(
                       Icons.visibility_off,
-                      color: Colors.orange,
+                      color: Color.fromARGB(255, 26, 130, 195),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
-                      borderSide: BorderSide(color: Colors.orange),
+                      borderSide: BorderSide(color: Color.fromARGB(255, 26, 130, 195)),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
-                      borderSide: BorderSide(color: Colors.orange),
+                      borderSide: BorderSide(color: Color.fromARGB(255, 26, 130, 195)),
                     ),
                   ),
                 ),
@@ -73,15 +73,15 @@ class UpdatePasswordPage extends StatelessWidget {
                     hintText: "Re-enter your Password",
                     suffixIcon: Icon(
                       Icons.visibility_off,
-                      color: Colors.orange,
+                      color: Color.fromARGB(255, 26, 130, 195),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
-                      borderSide: BorderSide(color: Colors.orange),
+                      borderSide: BorderSide(color: Color.fromARGB(255, 26, 130, 195)),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
-                      borderSide: BorderSide(color: Colors.orange),
+                      borderSide: BorderSide(color: Color.fromARGB(255, 26, 130, 195)),
                     ),
                   ),
                 ),
@@ -91,7 +91,7 @@ class UpdatePasswordPage extends StatelessWidget {
                   height: 50,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
+                      backgroundColor: Color.fromARGB(255, 26, 130, 195),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),

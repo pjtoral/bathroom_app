@@ -87,7 +87,7 @@ class SearchFilterBar extends StatelessWidget {
                             child: Row(
                               children: List.generate(
                                 value,
-                                (_) => const Icon(Icons.star, color: Colors.orange, size: 16),
+                                (_) => const Icon(Icons.star, color: Color.fromARGB(255, 26, 130, 195), size: 16),
                               ),
                             ),
                           );
@@ -167,7 +167,7 @@ class SearchFilterBar extends StatelessWidget {
                     Navigator.pop(ctx);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: Color.fromARGB(255, 26, 130, 195),
                     padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 32),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
@@ -187,14 +187,14 @@ class SearchFilterBar extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Colors.orange, width: 1),
+        border: Border.all(color: Color.fromARGB(255, 26, 130, 195), width: 1),
         borderRadius: BorderRadius.circular(24),
       ),
       child: Row(
         children: [
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.0),
-            child: Icon(Icons.search, color: Colors.orange),
+            child: Icon(Icons.search, color: Color.fromARGB(255, 26, 130, 195)),
           ),
           Expanded(
             child: TextField(
@@ -212,7 +212,7 @@ class SearchFilterBar extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.tune, color: Colors.orange),
+            icon: const Icon(Icons.tune, color: Color.fromARGB(255, 26, 130, 195)),
             onPressed: () => _showFilterSheet(context),
           ),
         ],

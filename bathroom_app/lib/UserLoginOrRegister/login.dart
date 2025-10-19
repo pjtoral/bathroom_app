@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: Column(
         children: [
-          Container(height: 160, width: double.infinity, color: Colors.orange),
+          Container(height: 160, width: double.infinity, color: Color.fromARGB(255, 26, 130, 195)),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                           _obscurePassword
                               ? Icons.visibility_off
                               : Icons.visibility,
-                          color: Colors.orange,
+                          color: Color.fromARGB(255, 26, 130, 195),
                         ),
                         onPressed: () {
                           setState(() {
@@ -92,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                       style: TextButton.styleFrom(
-                        foregroundColor: Colors.orange,
+                        foregroundColor: Color.fromARGB(255, 26, 130, 195),
                       ),
                       child: const Text("Forgot password?"),
                     ),
@@ -111,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
+                        backgroundColor: Color.fromARGB(255, 26, 130, 195),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -143,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: const Text(
                           "Sign up",
                           style: TextStyle(
-                            color: Colors.orange,
+                            color: Color.fromARGB(255, 26, 130, 195),
                             fontWeight: FontWeight.bold,
                           ),
                         ),

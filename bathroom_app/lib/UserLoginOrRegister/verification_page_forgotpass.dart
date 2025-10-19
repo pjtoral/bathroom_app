@@ -11,7 +11,7 @@ class VerificationPage extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            color: const Color(0xFFFFA726), // Orange color
+            color: const Color.fromARGB(255, 26, 130, 195), // blue color
             padding: const EdgeInsets.only(top: 50, left: 10),
             height: 150,
             width: double.infinity,
@@ -44,11 +44,11 @@ class VerificationPage extends StatelessWidget {
                     hintText: "XXXX-XXXX",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
-                      borderSide: BorderSide(color: Colors.orange),
+                      borderSide: BorderSide(color: Color.fromARGB(255, 26, 130, 195)),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
-                      borderSide: BorderSide(color: Colors.orange),
+                      borderSide: BorderSide(color: Color.fromARGB(255, 26, 130, 195)),
                     ),
                   ),
                 ),
@@ -59,7 +59,7 @@ class VerificationPage extends StatelessWidget {
                     Text(
                       "Resend",
                       style: TextStyle(
-                        color: Colors.orange,
+                        color: Color.fromARGB(255, 26, 130, 195),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -71,7 +71,7 @@ class VerificationPage extends StatelessWidget {
                   height: 50,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
+                      backgroundColor: Color.fromARGB(255, 26, 130, 195),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),

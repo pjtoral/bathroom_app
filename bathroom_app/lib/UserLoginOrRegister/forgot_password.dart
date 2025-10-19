@@ -42,7 +42,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 child: Container(
                   height: 160,
                   decoration: const BoxDecoration(
-                    color: Color(0xFFFFB300),
+                    color: Color.fromARGB(255, 26, 130, 195),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10),
@@ -138,7 +138,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             width: double.infinity,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFFFFB300),
+                                backgroundColor: const Color.fromARGB(255, 26, 130, 195),
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 15,
                                 ),
