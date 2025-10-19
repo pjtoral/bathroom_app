@@ -22,7 +22,7 @@ class AccountIcon extends StatelessWidget {
           children: [
             // Main account icon
             CircleAvatar(
-              backgroundColor: const Color.fromARGB(255, 255, 182, 98),
+              backgroundColor: const Color.fromARGB(255, 26, 130, 195),
               radius: 28,
               child: Icon(
                 Icons.account_circle,

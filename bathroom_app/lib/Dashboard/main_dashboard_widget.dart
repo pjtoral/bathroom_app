@@ -122,7 +122,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                     width: 52,
                     height: 8,
                     decoration: BoxDecoration(
-                      color: Colors.amber,
+                      color: Color.fromARGB(255, 26, 130, 195), //check itttttttttttttt
                       borderRadius: BorderRadius.circular(3),
                     ),
                   ),
@@ -135,14 +135,14 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      border: Border.all(color: Colors.orange, width: 1),
+                      border: Border.all(color: Color.fromARGB(255, 26, 130, 195), width: 1),
                       borderRadius: BorderRadius.circular(24),
                     ),
                     child: Row(
                       children: [
                         const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12.0),
-                          child: Icon(Icons.search, color: Colors.orange),
+                          child: Icon(Icons.search, color: Color.fromARGB(255, 26, 130, 195)),
                         ),
                         Expanded(
                           child: TextField(
@@ -169,7 +169,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                           },
                           child: const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 12.0),
-                            child: Icon(Icons.tune, color: Colors.orange),
+                            child: Icon(Icons.tune, color: Color.fromARGB(255, 26, 130, 195)),
                           ),
                         ),
                       ],
@@ -191,7 +191,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                             elevation: 2,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                             child: ListTile(
-                              leading: const Icon(Icons.location_on, color: Colors.orange),
+                              leading: const Icon(Icons.location_on, color: Color.fromARGB(255, 26, 130, 195)),
                               title: Text(item['name'], style: const TextStyle(fontWeight: FontWeight.bold)),
                               subtitle: Text(item['location']),
                               onTap: () {
@@ -273,7 +273,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                             },
                             child: const Text(
                               "See More",
-                              style: TextStyle(color: Colors.orange, fontSize: 16),
+                              style: TextStyle(color: Color.fromARGB(255, 26, 130, 195), fontSize: 16),
                             ),
                           ),
                         if (_showAllRecents)
@@ -285,7 +285,7 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                             },
                             child: const Text(
                               "See Less",
-                              style: TextStyle(color: Colors.orange, fontSize: 16),
+                              style: TextStyle(color: Color.fromARGB(255, 26, 130, 195), fontSize: 16),
                             ),
                           ),
                       ],
@@ -303,13 +303,13 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: ListTile(
-                          leading: const Icon(Icons.wc, color: Colors.orange),
+                          leading: const Icon(Icons.wc, color: Color.fromARGB(255, 26, 130, 195)),
                           title: Text(bathroom['name']),
                           subtitle: Text(bathroom['location']),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Icon(Icons.star, color: Colors.amber, size: 20),
+                              const Icon(Icons.star, color: Colors.amber, size: 20), // check itttttttt
                               const SizedBox(width: 4),
                               Text(bathroom['rating'].toString()),
                             ],
