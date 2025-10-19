@@ -22,7 +22,7 @@ class FirstUploadPage extends StatelessWidget {
                     width: 40,
                     height: 6,
                     decoration: BoxDecoration(
-                      color: Colors.orange,
+                      color: Color.fromARGB(255, 26, 130, 195),
                       borderRadius: BorderRadius.circular(3),
                     ),
                   ),
@@ -55,7 +55,7 @@ class FirstUploadPage extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.orange,
+                    color: Color.fromARGB(255, 26, 130, 195),
                     borderRadius: BorderRadius.circular(24),
                   ),
                   child: const Icon(Icons.arrow_back, color: Colors.white),
@@ -94,11 +94,11 @@ class FirstUploadPage extends StatelessWidget {
                     vertical: 14,
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.orange),
+                    borderSide: const BorderSide(color: Color.fromARGB(255, 26, 130, 195)),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.orange),
+                    borderSide: const BorderSide(color: Color.fromARGB(255, 26, 130, 195)),
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
@@ -119,7 +119,7 @@ class FirstUploadPage extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: Color.fromARGB(255, 26, 130, 195),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

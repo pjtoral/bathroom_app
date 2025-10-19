@@ -54,7 +54,7 @@ class _SecondUploadPageState extends State<SecondUploadPage> {
                         width: 40,
                         height: 6,
                         decoration: BoxDecoration(
-                          color: Colors.orange,
+                          color: Color.fromARGB(255, 26, 130, 195),
                           borderRadius: BorderRadius.circular(3),
                         ),
                       ),
@@ -63,7 +63,7 @@ class _SecondUploadPageState extends State<SecondUploadPage> {
                         width: 40,
                         height: 6,
                         decoration: BoxDecoration(
-                          color: Colors.orange,
+                          color: Color.fromARGB(255, 26, 130, 195),
                           borderRadius: BorderRadius.circular(3),
                         ),
                       ),
@@ -85,7 +85,7 @@ class _SecondUploadPageState extends State<SecondUploadPage> {
                         child: Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: Colors.orange,
+                            color: Color.fromARGB(255, 26, 130, 195),
                             borderRadius: BorderRadius.circular(24),
                           ),
                           child: const Icon(
@@ -123,7 +123,7 @@ class _SecondUploadPageState extends State<SecondUploadPage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.add, color: Colors.orange, size: 36),
+                            Icon(Icons.add, color: Color.fromARGB(255, 26, 130, 195), size: 36),
                             const SizedBox(height: 8),
                             Text(
                               'Add your images here!\nBrowse and add images to be posted',
@@ -184,7 +184,7 @@ class _SecondUploadPageState extends State<SecondUploadPage> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
+                  backgroundColor: Color.fromARGB(255, 26, 130, 195),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),

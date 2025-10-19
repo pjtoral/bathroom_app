@@ -41,7 +41,7 @@ class NotificationPopup extends StatelessWidget {
                         child: const Text(
                           'Clear',
                           style: TextStyle(
-                            color: Colors.orange,
+                            color: Color.fromARGB(255, 26, 130, 195),
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                           ),

@@ -29,7 +29,7 @@ class _TagWidgetState extends State<TagWidget> {
         margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: enabled ? const Color(0xFFED9D1E) : Colors.grey[400],
+          color: enabled ? const Color.fromARGB(255, 26, 130, 195) : Colors.grey[400],
           borderRadius: BorderRadius.circular(16),
         ),
         child: Row(

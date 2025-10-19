@@ -33,7 +33,7 @@ class ReviewsScreen extends StatelessWidget {
               child: Row(
                 children: [
                   CircleAvatar(
-                    backgroundColor: Color(0xFFFFB13C),
+                    backgroundColor: Color.fromARGB(255, 26, 130, 195),
                     child: IconButton(
                       icon: Icon(Icons.arrow_back, color: Colors.white),
                       onPressed: () => Navigator.of(context).pop(),
@@ -148,7 +148,7 @@ class ReviewsScreen extends StatelessWidget {
         child: LinearProgressIndicator(
           value: value,
           minHeight: 14,
-          color: Color(0xFFFFB13C),
+          color: Color.fromARGB(255, 26, 130, 195),
           backgroundColor: Colors.grey[200],
         ),
       ),
@@ -170,7 +170,7 @@ class ReviewsScreen extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 20,
-              backgroundColor: Color(0xFFFFB13C),
+              backgroundColor: Color.fromARGB(255, 26, 130, 195),
               backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl) : null,
               child: avatarUrl == null ? Icon(Icons.person, color: Colors.white, size: 24) : null,
             ),
@@ -187,7 +187,7 @@ class ReviewsScreen extends StatelessWidget {
                     children: [
                       ...List.generate(
                         rating,
-                        (i) => Icon(Icons.star, color: Color(0xFFFFB13C), size: 16),
+                        (i) => Icon(Icons.star, color: Color.fromARGB(255, 26, 130, 195), size: 16),
                       ),
                       SizedBox(width: 4),
                       Text(
