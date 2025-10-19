@@ -40,7 +40,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 left: 0,
                 right: 0,
                 child: Container(
-                  height: 160,
+                  height: 150,
                   decoration: const BoxDecoration(
                     color: Color.fromARGB(255, 26, 130, 195),
                     borderRadius: BorderRadius.only(
@@ -50,27 +50,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
               Positioned(
-                top: 20,
-                left: 20,
-                child: InkWell(
-                  onTap: () {
+                top: 50,
+                left: 10,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(Icons.arrow_back, color: Colors.black),
-                  ),
                 ),
               ),
               Positioned(
-                top: 150,
+                top: 170,
                 left: 0,
                 right: 0,
                 child: Column(
@@ -82,7 +73,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 12),
                     const Text(
                       "Please provide the email which you want to reset the password!",
                       textAlign: TextAlign.center,

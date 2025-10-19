@@ -32,7 +32,7 @@ class UpdatePasswordPage extends StatelessWidget {
                 const Center(
                   child: Text(
                     "Wowow",
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
                   ),
                 ),
                 const SizedBox(height: 8),
