@@ -29,9 +29,12 @@ class VerificationPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Almost there!",
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                const Center(
+                  child: Text(
+                    "Almost there!",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
+                  ),
                 ),
                 const SizedBox(height: 12),
                 const Text(
