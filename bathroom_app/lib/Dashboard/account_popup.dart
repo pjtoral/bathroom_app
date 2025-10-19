@@ -24,7 +24,7 @@ class AccountPopup extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: const BoxDecoration(
-                  color: Color(0xFFF29C1F), // orange circle
+                  color: Color.fromARGB(255, 26, 130, 195), // orange circle
                   shape: BoxShape.circle,
                 ),
               ),

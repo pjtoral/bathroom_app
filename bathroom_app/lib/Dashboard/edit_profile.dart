@@ -42,7 +42,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     const orangeBorder = OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(12)),
-      borderSide: BorderSide(color: Colors.orange),
+      borderSide: BorderSide(color: Color.fromARGB(255, 26, 130, 195)),
     );
 
     return Scaffold(
@@ -60,7 +60,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     padding: const EdgeInsets.all(8),
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.orange,
+                      color: Color.fromARGB(255, 26, 130, 195),
                     ),
                     child: const Icon(Icons.arrow_back, color: Colors.white),
                   ),
@@ -148,7 +148,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 suffixIcon: IconButton(
                   icon: Icon(
                     _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                    color: Colors.orange,
+                    color: Color.fromARGB(255, 26, 130, 195),
                   ),
                   onPressed: () {
                     setState(() {
@@ -165,7 +165,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ElevatedButton(
               onPressed: _saveChanges,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange,
+                backgroundColor: Color.fromARGB(255, 26, 130, 195),
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),

@@ -60,7 +60,7 @@ class ImageAddedWidget extends StatelessWidget {
                     width: barWidth * (progressPercent / 100),
                     height: 6,
                     decoration: BoxDecoration(
-                      color: Colors.orange,
+                      color: Color.fromARGB(255, 26, 130, 195),
                       borderRadius: BorderRadius.circular(3),
                     ),
                   ),
