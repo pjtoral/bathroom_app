@@ -31,7 +31,7 @@ class _SignupPageState extends State<SignupPage> {
           Container(
             height: 160,
             width: double.infinity,
-            color: Colors.orange,
+            color: Color.fromARGB(255, 26, 130, 195),
           ),
           Expanded(
             child: SingleChildScrollView(
@@ -84,7 +84,7 @@ class _SignupPageState extends State<SignupPage> {
                       suffixIcon: IconButton(
                         icon: Icon(
                           _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                          color: Colors.orange,
+                          color: Color.fromARGB(255, 26, 130, 195),
                         ),
                         onPressed: () {
                           setState(() {
@@ -113,7 +113,7 @@ class _SignupPageState extends State<SignupPage> {
                       suffixIcon: IconButton(
                         icon: Icon(
                           _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                          color: Colors.orange,
+                          color: Color.fromARGB(255, 26, 130, 195),
                         ),
                         onPressed: () {
                           setState(() {
@@ -133,7 +133,7 @@ class _SignupPageState extends State<SignupPage> {
                     child: ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
+                        backgroundColor: Color.fromARGB(255, 26, 130, 195),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -163,7 +163,7 @@ class _SignupPageState extends State<SignupPage> {
                         child: const Text(
                           "Login",
                           style: TextStyle(
-                            color: Colors.orange,
+                            color: Color.fromARGB(255, 26, 130, 195),
                             fontWeight: FontWeight.bold,
                           ),
                         ),

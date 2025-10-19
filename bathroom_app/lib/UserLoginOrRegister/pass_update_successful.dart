@@ -20,7 +20,7 @@ class _HuzzahPageState extends State<HuzzahPage> {
             Container(
               height: 160,
               width: double.infinity,
-              decoration: const BoxDecoration(color: Color(0xFFFFB300)),
+              decoration: const BoxDecoration(color: Color.fromARGB(255, 26, 130, 195)),
               child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [],
@@ -48,7 +48,7 @@ class _HuzzahPageState extends State<HuzzahPage> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFFFB300),
+                backgroundColor: const Color.fromARGB(255, 26, 130, 195),
                 padding: const EdgeInsets.symmetric(
                   horizontal: 50,
                   vertical: 15,
