@@ -38,7 +38,7 @@ class ThirdUploadPageState extends State<ThirdUploadPage> {
       },
       child: Icon(
         Icons.star,
-        color: filled ? Colors.orange : Colors.grey,
+        color: filled ? Color.fromARGB(255, 26, 130, 195) : Colors.grey,
         size: 32,
       ),
     );
@@ -62,7 +62,7 @@ class ThirdUploadPageState extends State<ThirdUploadPage> {
                     width: 40,
                     height: 6,
                     decoration: BoxDecoration(
-                      color: Colors.orange,
+                      color: Color.fromARGB(255, 26, 130, 195),
                       borderRadius: BorderRadius.circular(3),
                     ),
                   ),
@@ -71,7 +71,7 @@ class ThirdUploadPageState extends State<ThirdUploadPage> {
                     width: 40,
                     height: 6,
                     decoration: BoxDecoration(
-                      color: Colors.orange,
+                      color: Color.fromARGB(255, 26, 130, 195),
                       borderRadius: BorderRadius.circular(3),
                     ),
                   ),
@@ -80,7 +80,7 @@ class ThirdUploadPageState extends State<ThirdUploadPage> {
                     width: 40,
                     height: 6,
                     decoration: BoxDecoration(
-                      color: Colors.orange,
+                      color: Color.fromARGB(255, 26, 130, 195),
                       borderRadius: BorderRadius.circular(3),
                     ),
                   ),
@@ -94,7 +94,7 @@ class ThirdUploadPageState extends State<ThirdUploadPage> {
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Colors.orange,
+                        color: Color.fromARGB(255, 26, 130, 195),
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: const Icon(Icons.arrow_back, color: Colors.white),
@@ -196,7 +196,7 @@ class ThirdUploadPageState extends State<ThirdUploadPage> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: Color.fromARGB(255, 26, 130, 195),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

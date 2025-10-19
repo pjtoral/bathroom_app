@@ -50,7 +50,7 @@ class UploadSuccessPageState extends State<UploadSuccessPage> {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
+                        backgroundColor: Color.fromARGB(255, 26, 130, 195),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),

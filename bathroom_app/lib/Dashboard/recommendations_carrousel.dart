@@ -36,7 +36,7 @@ class RecommendationCard extends StatelessWidget {
           const SizedBox(height: 8),
           Row(
             children: [
-              const Icon(Icons.star, color: Colors.orange, size: 18),
+              const Icon(Icons.star, color: Color.fromARGB(255, 26, 130, 195), size: 18),
               Text(
                 rating.toString(),
                 style: const TextStyle(fontWeight: FontWeight.bold),

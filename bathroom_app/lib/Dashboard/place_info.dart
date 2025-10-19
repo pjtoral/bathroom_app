@@ -62,7 +62,7 @@ class _PlaceInfoPageState extends State<PlaceInfoPage> {
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
-                              color: Colors.orange[700],
+                              color: Color.fromARGB(255, 26, 130, 195), //chech itttttttttttttttttttt
                               shape: BoxShape.circle,
                             ),
                             child: Icon(Icons.directions, color: Colors.white, size: 24),
@@ -80,7 +80,7 @@ class _PlaceInfoPageState extends State<PlaceInfoPage> {
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
-                              color: _isFavorited ? Colors.red : Colors.deepOrange,
+                              color: _isFavorited ? Colors.red : Colors.red,
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
@@ -122,7 +122,7 @@ class _PlaceInfoPageState extends State<PlaceInfoPage> {
                           },
                           child: const Text(
                             "see all",
-                            style: TextStyle(color: Colors.orange, fontSize: 14),
+                            style: TextStyle(color: Color.fromARGB(255, 26, 130, 195), fontSize: 14),
                           ),
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
@@ -199,7 +199,7 @@ class _PlaceInfoPageState extends State<PlaceInfoPage> {
                                       height: 8,
                                       child: LinearProgressIndicator(
                                         value: 0.8,
-                                        color: Colors.orange,
+                                        color: Color.fromARGB(255, 26, 130, 195),
                                         backgroundColor: Colors.grey[300],
                                       ),
                                     ),
@@ -208,7 +208,7 @@ class _PlaceInfoPageState extends State<PlaceInfoPage> {
                                       height: 8,
                                       child: LinearProgressIndicator(
                                         value: 0.5,
-                                        color: Colors.orange,
+                                        color: Color.fromARGB(255, 26, 130, 195),
                                         backgroundColor: Colors.grey[300],
                                       ),
                                     ),
@@ -217,7 +217,7 @@ class _PlaceInfoPageState extends State<PlaceInfoPage> {
                                       height: 8,
                                       child: LinearProgressIndicator(
                                         value: 0.2,
-                                        color: Colors.orange,
+                                        color: Color.fromARGB(255, 26, 130, 195),
                                         backgroundColor: Colors.grey[300],
                                       ),
                                     ),
@@ -226,7 +226,7 @@ class _PlaceInfoPageState extends State<PlaceInfoPage> {
                                       height: 8,
                                       child: LinearProgressIndicator(
                                         value: 0.2,
-                                        color: Colors.orange,
+                                        color: Color.fromARGB(255, 26, 130, 195),
                                         backgroundColor: Colors.grey[300],
                                       ),
                                     ),
@@ -235,7 +235,7 @@ class _PlaceInfoPageState extends State<PlaceInfoPage> {
                                       height: 8,
                                       child: LinearProgressIndicator(
                                         value: 0.2,
-                                        color: Colors.orange,
+                                        color: Color.fromARGB(255, 26, 130, 195),
                                         backgroundColor: Colors.grey[300],
                                       ),
                                     ),
@@ -313,7 +313,7 @@ class _PlaceInfoPageState extends State<PlaceInfoPage> {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       margin: EdgeInsets.zero,
       decoration: BoxDecoration(
-        color: Colors.orange[700],
+        color: Color.fromARGB(255, 26, 130, 195),  // check itttttttttttttttttttt
         borderRadius: BorderRadius.circular(30), // pill shape
       ),
       child: Text(
@@ -372,7 +372,7 @@ class _PlaceInfoPageState extends State<PlaceInfoPage> {
                         children: [
                           ...List.generate(
                             rating,
-                            (i) => Icon(Icons.star, color: Colors.orange, size: 20),
+                            (i) => Icon(Icons.star, color: Color.fromARGB(255, 26, 130, 195), size: 20),
                           ),
                           SizedBox(width: 8),
                           Text(
