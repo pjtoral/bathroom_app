@@ -1,9 +1,12 @@
 import 'package:bathroom_app/Dashboard/upload_third.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:bathroom_app/Dashboard/image_added.dart';
-import 'package:bathroom_app/Dashboard/tags.dart';
+import 'package:bathroom_app/widgets/widgets.dart';
 
+/// Second step of the upload flow where the user picks images.
+///
+/// The page stores picked images in local state and displays them using
+/// [ImageAddedWidget]. The file-picking logic is encapsulated in [_pickImages].
 class SecondUploadPage extends StatefulWidget {
   const SecondUploadPage({Key? key}) : super(key: key);
 
@@ -15,6 +18,9 @@ class _SecondUploadPageState extends State<SecondUploadPage> {
   final List<XFile> _images = [];
   final ImagePicker _picker = ImagePicker();
 
+  /// Opens the gallery and picks a single image.
+  ///
+  /// The chosen image is appended to the internal [_images] list.
   Future<void> _pickImages() async {
     try {
       final XFile? picked = await _picker.pickImage(
@@ -28,6 +34,7 @@ class _SecondUploadPageState extends State<SecondUploadPage> {
     } catch (_) {}
   }
 
+  /// Remove image at [index] from the current selection.
   void _removeImage(int index) {
     setState(() {
       _images.removeAt(index);
@@ -108,35 +115,8 @@ class _SecondUploadPageState extends State<SecondUploadPage> {
                   const SizedBox(height: 24),
 
                   // Upload area
-                  InkWell(
+                  UploadDropZone(
                     onTap: _pickImages,
-                    borderRadius: BorderRadius.circular(8),
-                    child: Container(
-                      width: double.infinity,
-                      height: 140,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.white,
-                      ),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.add, color: Color.fromARGB(255, 26, 130, 195), size: 36),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Add your images here!\nBrowse and add images to be posted',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.grey[700],
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
                   ),
 
                   const SizedBox(height: 16),

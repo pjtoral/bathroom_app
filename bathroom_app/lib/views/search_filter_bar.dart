@@ -1,12 +1,29 @@
 import 'package:flutter/material.dart';
 
+/// Search bar with a filter button that opens a bottom-sheet filter dialog.
+///
+/// This presentational widget forwards search changes via [onSearchChanged] and
+/// selected filters via [onRatingFilterChanged] and [onTagsChanged].
 class SearchFilterBar extends StatelessWidget {
+  /// Controller for the search input.
   final TextEditingController controller;
+
+  /// Focus node for the search input (optional).
   final FocusNode? focusNode;
+
+  /// Whether a rating filter is currently selected (nullable).
   final double? selectedRating;
+
+  /// Currently selected tags.
   final List<String> selectedTags;
+
+  /// Called when the search text changes.
   final ValueChanged<String> onSearchChanged;
+
+  /// Called when the rating filter changes.
   final ValueChanged<double?> onRatingFilterChanged;
+
+  /// Called when the selected tags list changes.
   final ValueChanged<List<String>> onTagsChanged;
 
   const SearchFilterBar({
@@ -20,6 +37,7 @@ class SearchFilterBar extends StatelessWidget {
     required this.onTagsChanged,
   });
 
+  /// Show the filter bottom sheet and allow temporary edits before applying.
   void _showFilterSheet(BuildContext context) {
     final tags = [
       'Bidet', 'Soap', 'Clean', 'Bad', 'LGBT-Friendly',

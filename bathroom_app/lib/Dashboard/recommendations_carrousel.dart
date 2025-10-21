@@ -66,4 +66,6 @@ class RecommendationCard extends StatelessWidget {
       ),
     );
   }
+
+  Widget? toList() {}
 }
