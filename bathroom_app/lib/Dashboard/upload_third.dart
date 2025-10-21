@@ -1,7 +1,12 @@
+import 'package:bathroom_app/widgets/star_rating.dart';
 import 'package:flutter/material.dart';
-import 'package:bathroom_app/Dashboard/tags.dart';
+import 'package:bathroom_app/widgets/widgets.dart';
 import 'package:bathroom_app/Dashboard/upload_success.dart';
 
+/// Final upload step for adding a review, star rating and tags.
+///
+/// This widget is controlled by the parent page; it stores the review text in
+/// [reviewController] and exposes the current integer [rating].
 class ThirdUploadPage extends StatefulWidget {
   const ThirdUploadPage({Key? key}) : super(key: key);
 
@@ -10,7 +15,10 @@ class ThirdUploadPage extends StatefulWidget {
 }
 
 class ThirdUploadPageState extends State<ThirdUploadPage> {
+  /// Current selected rating (1..5).
   int rating = 2;
+
+  /// Controller for the review text field.
   final TextEditingController reviewController = TextEditingController();
 
   final List<String> tags = [
@@ -26,22 +34,6 @@ class ThirdUploadPageState extends State<ThirdUploadPage> {
   void dispose() {
     reviewController.dispose();
     super.dispose();
-  }
-
-  Widget buildStar(int index) {
-    bool filled = index < rating;
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          rating = index + 1;
-        });
-      },
-      child: Icon(
-        Icons.star,
-        color: filled ? Color.fromARGB(255, 26, 130, 195) : Colors.grey,
-        size: 32,
-      ),
-    );
   }
 
   @override
@@ -113,10 +105,20 @@ class ThirdUploadPageState extends State<ThirdUploadPage> {
 
               const SizedBox(height: 12),
 
-              // Stars row
+              // Stars row -> replaced with StarRating widget (controlled)
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(5, (index) => buildStar(index)),
+                children: [
+                  StarRating(
+                    rating: rating,
+                    onChanged: (v) {
+                      setState(() {
+                        rating = v;
+                      });
+                    },
+                    size: 32,
+                  ),
+                ],
               ),
 
               const SizedBox(height: 16),

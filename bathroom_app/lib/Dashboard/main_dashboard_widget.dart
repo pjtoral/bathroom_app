@@ -1,9 +1,14 @@
+import 'package:bathroom_app/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:bathroom_app/views/search_utils.dart';
 import 'recommendations_carrousel.dart';
 import 'package:bathroom_app/Dashboard/filter_popup.dart';
 import 'place_info.dart';
 
+/// Draggable sheet containing search, recommendations and recent places.
+///
+/// This widget manages the presentation of recent items and simple search
+/// filtering. It delegates detailed filtering to other components.
 class MainDashboardWidget extends StatefulWidget {
   const MainDashboardWidget({super.key});
 
@@ -129,51 +134,22 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                 ),
                 const SizedBox(height: 16),
 
-                // Search Bar
+                // Search Bar (replaced inline with SearchBarWidget)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Color.fromARGB(255, 26, 130, 195), width: 1),
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: Row(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12.0),
-                          child: Icon(Icons.search, color: Color.fromARGB(255, 26, 130, 195)),
+                  child: SearchBarWidget(
+                    controller: _searchController,
+                    onChanged: _onSearchChanged,
+                    onFilterTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                         ),
-                        Expanded(
-                          child: TextField(
-                            controller: _searchController,
-                            onChanged: _onSearchChanged,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Find nearest comfort room',
-                              hintStyle: TextStyle(color: Color(0xFF8A8A8A)),
-                              isDense: true,
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-                              ),
-                              builder: (context) => const FilterPopup(),
-                            );
-                          },
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 12.0),
-                            child: Icon(Icons.tune, color: Color.fromARGB(255, 26, 130, 195)),
-                          ),
-                        ),
-                      ],
-                    ),
+                        builder: (context) => const FilterPopup(),
+                      );
+                    },
                   ),
                 ),
 
@@ -205,6 +181,34 @@ class _MainDashboardWidgetState extends State<MainDashboardWidget> {
                       }).toList(),
                     ),
                   ),
+
+                // Show Recommendations + Recents only when not typing
+                // if (searchText.isEmpty) ...[
+                //   const Padding(
+                //     padding: EdgeInsets.symmetric(horizontal: 20.0),
+                //     child: Text("Recommendations near you",
+                //         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                //   ),
+                //   const SizedBox(height: 19),
+                //   SizedBox(
+                //     height: 340,
+                //     child: PageView(
+                //       controller: PageController(viewportFraction: 0.85),
+                //       children: [
+                //         GestureDetector(
+                //           onTap: () {
+                //             Navigator.of(context).push(
+                //               MaterialPageRoute(builder: (_) => const PlaceInfoPage()),
+                //             );
+                //           },
+                //           child: const RecommendationCard(
+                //             title: "Stephen cr",
+                //             rating: 4.8,
+                //             reviews: 31,
+                //             photos:
+                //       }).toList(),
+                //     ),
+                //   ),
 
                 // Show Recommendations + Recents only when not typing
                 if (searchText.isEmpty) ...[

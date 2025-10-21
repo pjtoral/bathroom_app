@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 import 'UserLoginOrRegister/login.dart';
 import 'UserLoginOrRegister/forgot_password.dart';
 
-void main(){ 
+/// Application entry point.
+void main() {
   runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ForgotPasswordData()),
       ],
       child: const MyApp(),
-    ),);}
+    ),);
+}
 
+/// Root application widget.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override

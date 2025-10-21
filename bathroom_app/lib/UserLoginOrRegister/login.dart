@@ -3,6 +3,9 @@ import 'signup.dart';
 import 'forgot_password.dart';
 import '../Dashboard/main_dashboard_map.dart';
 
+/// Login screen that collects username and password.
+///
+/// The screen navigates to [DashboardMap] on successful login (placeholder).
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 

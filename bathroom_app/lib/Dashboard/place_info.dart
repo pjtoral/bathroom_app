@@ -1,7 +1,13 @@
+import 'package:bathroom_app/widgets/widgets.dart';
+import 'package:bathroom_app/widgets/review_card.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'reviews.dart';
 
+/// Details screen for a selected place.
+///
+/// The screen includes photos, tags (via [PillChip]), summary rating and a
+/// carousel of [ReviewCard] items.
 class PlaceInfoPage extends StatefulWidget {
   const PlaceInfoPage({super.key});
 
@@ -98,15 +104,13 @@ class _PlaceInfoPageState extends State<PlaceInfoPage> {
                       style: TextStyle(fontSize: 15, color: Colors.grey[700]),
                     ),
                     SizedBox(height: 8),
-                    Row(
-                      children: [
-                        _chip("bidet"),
-                        SizedBox(width: 4),
-                        _chip("soap"),
-                        SizedBox(width: 4),
-                        _chip("water"),
-                        SizedBox(width: 4),
-                        _chip("tissue"),
+                    // Chips (extracted to PillChip for reuse)
+                    Wrap(
+                      children: const [
+                        PillChip(label: "Bidet"),
+                        PillChip(label: "Soap"),
+                        PillChip(label: "Water"),
+                        PillChip(label: "Tissue"),
                       ],
                     ),
                     SizedBox(height: 16),
@@ -262,12 +266,12 @@ class _PlaceInfoPageState extends State<PlaceInfoPage> {
                               MaterialPageRoute(builder: (_) => ReviewsScreen()),
                             );
                           },
-                          child: _reviewCard(
+                          child: const ReviewCard(
                             name: "Jen wildoson",
                             rating: 5,
                             time: "1 month ago",
                             review: "Love the food and atmosphere here, very cozy",
-                            avatarUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=facearea&w=80&h=80&facepad=2",
+                            compact: true,
                           ),
                         ),
                         GestureDetector(
@@ -276,12 +280,12 @@ class _PlaceInfoPageState extends State<PlaceInfoPage> {
                               MaterialPageRoute(builder: (_) => ReviewsScreen()),
                             );
                           },
-                          child: _reviewCard(
+                          child: const ReviewCard(
                             name: "Peler Newman",
                             rating: 5,
                             time: "1 month ago",
                             review: "This is my favorite place to work, I really like the vibe and location!",
-                            avatarUrl: "https://randomuser.me/api/portraits/men/32.jpg",
+                            compact: true,
                           ),
                         ),
                       ],
@@ -304,103 +308,6 @@ class _PlaceInfoPageState extends State<PlaceInfoPage> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _chip(String label) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      margin: EdgeInsets.zero,
-      decoration: BoxDecoration(
-        color: Color.fromARGB(255, 26, 130, 195),  // check itttttttttttttttttttt
-        borderRadius: BorderRadius.circular(30), // pill shape
-      ),
-      child: Text(
-        label,
-        style: const TextStyle(
-          fontSize: 12,
-          color: Colors.white,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    );
-  }
-
-  Widget _reviewCard({
-    required String name,
-    required int rating,
-    required String time,
-    required String review,
-    String? avatarUrl,
-  }) {
-    return Card(
-      margin: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-      elevation: 0,
-      color: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  radius: 24,
-                  backgroundImage: avatarUrl != null
-                      ? NetworkImage(avatarUrl)
-                      : null,
-                  child: avatarUrl == null
-                      ? Icon(Icons.person, size: 28)
-                      : null,
-                ),
-                SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          ...List.generate(
-                            rating,
-                            (i) => Icon(Icons.star, color: Color.fromARGB(255, 26, 130, 195), size: 20),
-                          ),
-                          SizedBox(width: 8),
-                          Text(
-                            time,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[500],
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 8),
-            Text(
-              review,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[700],
-                fontWeight: FontWeight.normal,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
