@@ -1,8 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:bathroom_app/UserLoginOrRegister/pass_update_successful.dart';
 
-class UpdatePasswordPage extends StatelessWidget {
+class UpdatePasswordPage extends StatefulWidget {
   const UpdatePasswordPage({super.key});
+
+  @override
+  State<UpdatePasswordPage> createState() => _UpdatePasswordPageState();
+}
+
+class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
+  bool _passwordVisible = false;
+  bool _confirmPasswordVisible = false;
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _passwordVisible = !_passwordVisible;
+    });
+  }
+
+  void _toggleConfirmPasswordVisibility() {
+    setState(() {
+      _confirmPasswordVisible = !_confirmPasswordVisible;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,19 +66,22 @@ class UpdatePasswordPage extends StatelessWidget {
                 const SizedBox(height: 32),
                 const Text("Password"),
                 const SizedBox(height: 8),
-                const TextField(
-                  obscureText: true,
+                TextField(
+                  obscureText: !_passwordVisible,
                   decoration: InputDecoration(
                     hintText: "Enter your Password",
-                    suffixIcon: Icon(
-                      Icons.visibility_off,
-                      color: Color.fromARGB(255, 26, 130, 195),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                        color: const Color.fromARGB(255, 26, 130, 195),
+                      ),
+                      onPressed: _togglePasswordVisibility,
                     ),
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                       borderSide: BorderSide(color: Color.fromARGB(255, 26, 130, 195)),
                     ),
-                    focusedBorder: OutlineInputBorder(
+                    focusedBorder: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                       borderSide: BorderSide(color: Color.fromARGB(255, 26, 130, 195)),
                     ),
@@ -67,19 +90,22 @@ class UpdatePasswordPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 const Text("Confirm Password"),
                 const SizedBox(height: 8),
-                const TextField(
-                  obscureText: true,
+                TextField(
+                  obscureText: !_confirmPasswordVisible,
                   decoration: InputDecoration(
                     hintText: "Re-enter your Password",
-                    suffixIcon: Icon(
-                      Icons.visibility_off,
-                      color: Color.fromARGB(255, 26, 130, 195),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _confirmPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        color: const Color.fromARGB(255, 26, 130, 195),
+                      ),
+                      onPressed: _toggleConfirmPasswordVisibility,
                     ),
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                       borderSide: BorderSide(color: Color.fromARGB(255, 26, 130, 195)),
                     ),
-                    focusedBorder: OutlineInputBorder(
+                    focusedBorder: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
                       borderSide: BorderSide(color: Color.fromARGB(255, 26, 130, 195)),
                     ),
