@@ -6,6 +6,7 @@ import 'package:bathroom_app/Dashboard/main_dashboard_widget.dart';
 import 'package:bathroom_app/Dashboard/map_utils/map_marker.dart';
 import 'package:bathroom_app/Dashboard/map_utils/map_data.dart';
 import 'package:bathroom_app/Dashboard/mini_account.dart';
+import 'package:bathroom_app/Dashboard/map_marker_location_info.dart';
 
 class DashboardMap extends StatefulWidget {
   const DashboardMap({super.key});
@@ -17,8 +18,9 @@ class DashboardMap extends StatefulWidget {
 class _DashboardMapState extends State<DashboardMap> {
   static const LatLng tempLocation = LatLng(10.3280, 123.9063);
   bool _showAccountPopup = false;
-
+  bool _showBottomPanel = false;
   String? _mapStyle;
+  GoogleMapController? _mapController;
   final Set<Marker> _markers = {};
 
   @override
@@ -32,11 +34,8 @@ class _DashboardMapState extends State<DashboardMap> {
     setState(() {
       _mapStyle = style;
     });
-
     await MapMarkerUtils.loadCustomIcon();
-
     _loadMarkers();
-
     setState(() {});
   }
 
@@ -46,11 +45,24 @@ class _DashboardMapState extends State<DashboardMap> {
         id: markerInfo['id'],
         title: markerInfo['title'],
         position: markerInfo['position'],
-        onTap: () {
-          // TODO: call here the page for displaying place info
-        },
+        onTap: () => _onMarkerTapped(markerInfo['position']),
       );
       _markers.add(marker);
+    }
+  }
+
+  void _onMarkerTapped(LatLng position) {
+    setState(() {
+      _showBottomPanel = true;
+    });
+
+    if (_mapController != null) {
+      MapMarkerUtils.positionMarkerAbovePanel(
+        controller: _mapController!,
+        markerPosition: position,
+        context: context,
+        bottomPanelHeightPercent: 0.7,
+      );
     }
   }
 
@@ -73,6 +85,7 @@ class _DashboardMapState extends State<DashboardMap> {
     return Scaffold(
       body: Stack(
         children: [
+          // Map layer (bottom)
           if (_mapStyle != null)
             Positioned.fill(
               child: GoogleMap(
@@ -86,11 +99,25 @@ class _DashboardMapState extends State<DashboardMap> {
                 myLocationButtonEnabled: false,
                 mapToolbarEnabled: false,
                 onMapCreated: (controller) {
+                  _mapController = controller;
                   controller.setMapStyle(_mapStyle);
+                },
+                onTap: (_) {
+                  setState(() {
+                    _showBottomPanel = false;
+                  });
                 },
               ),
             ),
           const MainDashboardWidget(),
+          // Bottom panel (middle layer) - NO Positioned wrapper needed
+          if (_showBottomPanel)
+            const MapMarkerBottomPanel(
+              initialChildSize: 0.7,
+              minChildSize: 0.3,
+              maxChildSize: 0.9,
+            ),
+          // Dashboard widgets (top layer)
           AccountIcon(),
         ],
       ),
