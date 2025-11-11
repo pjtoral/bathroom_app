@@ -1,4 +1,4 @@
 # run with supabase
 ```
-flutter run --dart-define-from-file=api.json
+flutter pub run build_runner build
 ```
