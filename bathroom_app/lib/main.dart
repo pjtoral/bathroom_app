@@ -2,18 +2,22 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'UserLoginOrRegister/login.dart';
 import 'UserLoginOrRegister/forgot_password.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:bathroom_app/backend/env.dart';
 
-/// Application entry point.
-void main() {
-  runApp(MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => ForgotPasswordData()),
-      ],
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(url: Env.url, anonKey: Env.anonKey);
+
+  runApp(
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => ForgotPasswordData())],
       child: const MyApp(),
-    ),);
+    ),
+  );
 }
 
-/// Root application widget.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override

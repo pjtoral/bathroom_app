@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'signup.dart';
 import 'forgot_password.dart';
 import '../Dashboard/main_dashboard_map.dart';
+import 'package:bathroom_app/Backend/Service/auth.dart';
 
-/// Login screen that collects username and password.
+/// Login screen that collects email and password.
 ///
-/// The screen navigates to [DashboardMap] on successful login (placeholder).
+/// The screen navigates to [DashboardMap] on successful login.
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -15,6 +16,55 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _obscurePassword = true;
+  bool _isLoading = false;
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _authService = SupabaseAuthService();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleLogin() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      _showErrorSnackBar('Please enter both email and password');
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      await _authService.signIn(email: email, password: password);
+
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => DashboardMap()),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        _showErrorSnackBar('Login failed: ${e.toString()}');
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  void _showErrorSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +72,11 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: Column(
         children: [
-          Container(height: 160, width: double.infinity, color: Color.fromARGB(255, 26, 130, 195)),
+          Container(
+            height: 160,
+            width: double.infinity,
+            color: Color.fromARGB(255, 26, 130, 195),
+          ),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -43,13 +97,15 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 32),
                   const Text(
-                    'Username',
+                    'Email',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(height: 0),
                   TextField(
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
-                      hintText: 'Enter your username',
+                      hintText: 'Enter your email',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -62,6 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 4),
                   TextField(
+                    controller: _passwordController,
                     obscureText: _obscurePassword,
                     decoration: InputDecoration(
                       hintText: 'Enter your password',
@@ -105,28 +162,31 @@ class _LoginPageState extends State<LoginPage> {
                     width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DashboardMap(),
-                          ),
-                        );
-                      },
+                      onPressed: _isLoading ? null : _handleLogin,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromARGB(255, 26, 130, 195),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text(
-                        'Login',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
+                      child:
+                          _isLoading
+                              ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                              : const Text(
+                                'Login',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
                     ),
                   ),
                   const SizedBox(height: 3),
