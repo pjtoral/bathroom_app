@@ -1,2 +1,0 @@
-Y:/C202301008/bathroom_app/bathroom_app/android/app/.cxx/RelWithDebInfo/13b5z6g3/armeabi-v7a/CMakeFiles/edit_cache.dir
-Y:/C202301008/bathroom_app/bathroom_app/android/app/.cxx/RelWithDebInfo/13b5z6g3/armeabi-v7a/CMakeFiles/rebuild_cache.dir
