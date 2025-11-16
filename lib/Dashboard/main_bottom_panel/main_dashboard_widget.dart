@@ -1,0 +1,402 @@
+import 'package:bathroom_app/widgets/search_bar.dart';
+import 'package:flutter/material.dart';
+import 'package:bathroom_app/views/search_utils.dart';
+import 'recommendations_carrousel.dart';
+import 'package:bathroom_app/Dashboard/main_bottom_panel/filter_popup.dart';
+import '../place_info/place_info.dart';
+
+/// Draggable sheet containing search, recommendations and recent places.
+///
+/// This widget manages the presentation of recent items and simple search
+/// filtering. It delegates detailed filtering to other components.
+class MainDashboardWidget extends StatefulWidget {
+  const MainDashboardWidget({super.key});
+
+  @override
+  State<MainDashboardWidget> createState() => _MainDashboardWidgetState();
+}
+
+class _MainDashboardWidgetState extends State<MainDashboardWidget> {
+  final TextEditingController _searchController = TextEditingController();
+  String searchText = '';
+  bool _showAllRecents = false;
+
+  List<String> comfortRooms = [
+    'CR - Ground Floor',
+    'CR - 2nd Floor',
+    'CR - Near Cafeteria',
+    'CR - Library Side',
+    'CR - Admin Wing',
+  ];
+
+  static final List<Map<String, dynamic>> recentBathrooms = [
+    {
+      'name': 'Ayala - CBlock',
+      'location': '2nd Floor, Ayala Central Bloc Cebu, Cebu City',
+      'rating': 4.5,
+    },
+    {
+      'name': 'The walk',
+      'location': 'Ayala Central Bloc Cebu, Cebu City',
+      'rating': 4.0,
+    },
+    {
+      'name': 'IT Park Terminal',
+      'location': 'IT Park, Cebu City',
+      'rating': 3.8,
+    },
+    {
+      'name': 'iAcademy Comfort Room',
+      'location': '5th Floor, Filinvest Tower 2, Cebu City',
+      'rating': 4.2,
+    },
+    // Additional 3 places for "See More"
+    {
+      'name': 'SM Seaside CR',
+      'location': '3rd Floor, SM Seaside City Cebu, Cebu City',
+      'rating': 4.1,
+    },
+    {
+      'name': 'Robinsons Galleria CR',
+      'location': 'Ground Floor, Robinsons Galleria, Cebu City',
+      'rating': 3.9,
+    },
+    {
+      'name': 'Fuente Osmeña CR',
+      'location': 'Fuente Osmeña Circle, Cebu City',
+      'rating': 3.7,
+    },
+  ];
+
+  void _onSearchChanged(String value) {
+    setState(() {
+      searchText = value;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Show 4 or all (or up to 7) recent places depending on _showAllRecents
+    final recentsToShow =
+        _showAllRecents
+            ? recentBathrooms.take(7).toList()
+            : recentBathrooms.take(4).toList();
+
+    final filteredComfortRooms = comfortRooms
+        .where((item) => item.toLowerCase().contains(searchText.toLowerCase()))
+        .map(
+          (item) => {
+            'name': item,
+            'location': 'Block 11, Garden Row, Abad St, Cebu City',
+            'rating': null,
+          },
+        );
+
+    final filteredRecents =
+        recentBathrooms
+            .where(
+              (item) =>
+                  item['name'].toString().toLowerCase().contains(
+                    searchText.toLowerCase(),
+                  ) ||
+                  item['location'].toString().toLowerCase().contains(
+                    searchText.toLowerCase(),
+                  ),
+            )
+            .toList();
+
+    final searchResults = [...filteredComfortRooms, ...filteredRecents];
+
+    return DraggableScrollableSheet(
+      initialChildSize: 0.101,
+      minChildSize: 0.101,
+      maxChildSize: 0.9,
+      snap: true,
+      snapSizes: const [0.101, 0.55, 0.9],
+      builder: (context, scrollController) {
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              boxShadow: [
+                BoxShadow(
+                  color: Color.fromARGB(66, 138, 138, 138),
+                  blurRadius: 10,
+                ),
+              ],
+            ),
+            child: ListView(
+              controller: scrollController,
+              padding: EdgeInsets.zero,
+              children: [
+                const SizedBox(height: 12),
+                Center(
+                  child: Container(
+                    width: 52,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(
+                        255,
+                        26,
+                        130,
+                        195,
+                      ), //check itttttttttttttt
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // Search Bar (replaced inline with SearchBarWidget)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                  child: SearchBarWidget(
+                    controller: _searchController,
+                    onChanged: _onSearchChanged,
+                    onFilterTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(16),
+                          ),
+                        ),
+                        builder: (context) => const FilterPopup(),
+                      );
+                    },
+                  ),
+                ),
+
+                const SizedBox(height: 21),
+
+                // Search Results
+                if (searchText.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                    child: Column(
+                      children:
+                          searchResults.map((item) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 6.0,
+                              ),
+                              child: Card(
+                                elevation: 2,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: ListTile(
+                                  leading: const Icon(
+                                    Icons.location_on,
+                                    color: Color.fromARGB(255, 26, 130, 195),
+                                  ),
+                                  title: Text(
+                                    item['name'],
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  subtitle: Text(item['location']),
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (_) => const PlaceInfoPage(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                    ),
+                  ),
+
+                // Show Recommendations + Recents only when not typing
+                // if (searchText.isEmpty) ...[
+                //   const Padding(
+                //     padding: EdgeInsets.symmetric(horizontal: 20.0),
+                //     child: Text("Recommendations near you",
+                //         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                //   ),
+                //   const SizedBox(height: 19),
+                //   SizedBox(
+                //     height: 340,
+                //     child: PageView(
+                //       controller: PageController(viewportFraction: 0.85),
+                //       children: [
+                //         GestureDetector(
+                //           onTap: () {
+                //             Navigator.of(context).push(
+                //               MaterialPageRoute(builder: (_) => const PlaceInfoPage()),
+                //             );
+                //           },
+                //           child: const RecommendationCard(
+                //             title: "Stephen cr",
+                //             rating: 4.8,
+                //             reviews: 31,
+                //             photos:
+                //       }).toList(),
+                //     ),
+                //   ),
+
+                // Show Recommendations + Recents only when not typing
+                if (searchText.isEmpty) ...[
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Text(
+                      "Recommendations near you",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 19),
+                  SizedBox(
+                    height: 340,
+                    child: PageView(
+                      controller: PageController(viewportFraction: 0.85),
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => const PlaceInfoPage(),
+                              ),
+                            );
+                          },
+                          child: const RecommendationCard(
+                            title: "Stephen cr",
+                            rating: 4.8,
+                            reviews: 31,
+                            photos: 18,
+                            description:
+                                "wow! so clean and so fresh! the albratoss provided was scrumptious!",
+                            author: "anonymous",
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => const PlaceInfoPage(),
+                              ),
+                            );
+                          },
+                          child: const RecommendationCard(
+                            title: "mjart cr",
+                            rating: 3.8,
+                            reviews: 311,
+                            photos: 26,
+                            description:
+                                "why is it raining so hard today, I cant go to the gym",
+                            author: "anonymous",
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Recents Header
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Recents",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                        if (!_showAllRecents)
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _showAllRecents = true;
+                              });
+                            },
+                            child: const Text(
+                              "See More",
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 26, 130, 195),
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        if (_showAllRecents)
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _showAllRecents = false;
+                              });
+                            },
+                            child: const Text(
+                              "See Less",
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 26, 130, 195),
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Recents list
+                  ...recentsToShow.map(
+                    (bathroom) => Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 18.0,
+                        vertical: 6.0,
+                      ),
+                      child: Card(
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.wc,
+                            color: Color.fromARGB(255, 26, 130, 195),
+                          ),
+                          title: Text(bathroom['name']),
+                          subtitle: Text(bathroom['location']),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                                size: 20,
+                              ), // check itttttttt
+                              const SizedBox(width: 4),
+                              Text(bathroom['rating'].toString()),
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => const PlaceInfoPage(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
